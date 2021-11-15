@@ -4,20 +4,26 @@ Image Signal Processor Pipeline using Halide
 # Requirements
 1.Halide 12.0.0 or above: https://github.com/halide/Halide
 
+2.
+
 # Methods
-1.Resize input image to get low resolution image for deep learning.
+1.Input Raw image(GRBG)
 
-2.Apply laplacian pyramid and deep learning model to correct exposure of image.
+2.Denoise image
 
-3.Apply Bilateral Guided Upsampling to get high resolution exposure corrected image. 
+3.Demosaic image
 
-4.Fuse input image and exposure corrected image to get better performance of exposure correction.
+4.Color correct with 
+
+5.Gamma correct
+
+6.Sharpen
 
 # Input
 Raw Image
 
 # Image Signal Processor Pipeline Video
-https://user-images.githubusercontent.com/58883801/141731689-90c418ff-5390-40ab-a20e-e1c0f536a34b.mp4
+https://user-images.githubusercontent.com/58883801/141746628-aa8d2ac3-017f-4d34-8767-c854abfec547.mp4
 
 # Usage
 1. Change HALIDE_DISTRIB_PATH to yours in Makefile.inc
