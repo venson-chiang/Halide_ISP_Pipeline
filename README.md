@@ -9,15 +9,15 @@ Image Signal Processor Pipeline using Halide
 # Methods
 1.Input Raw image(Bayer pattern: GRBG)
 
-2.Denoise image
+2.Denoise
 
-3.Demosaic image
+3.Demosaic
 
-4.Color correct
+4.Color correction
 
-5.Gamma correct
+5.Gamma correction
 
-6.Sharp
+6.Sharpen
 
 # Image Signal Processor Pipeline Video
 https://user-images.githubusercontent.com/58883801/141746628-aa8d2ac3-017f-4d34-8767-c854abfec547.mp4
