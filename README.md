@@ -13,14 +13,11 @@ Image Signal Processor Pipeline using Halide
 
 3.Demosaic image
 
-4.Color correct(According to the sensor in the Nokia N900)
+4.Color correct
 
 5.Gamma correct
 
 6.Sharpen
-
-# Input
-Raw Image
 
 # Image Signal Processor Pipeline Video
 https://user-images.githubusercontent.com/58883801/141746628-aa8d2ac3-017f-4d34-8767-c854abfec547.mp4
@@ -33,6 +30,10 @@ HALIDE_DISTRIB_PATH ?= /mnt/d/Software/Halide-12/distrib
 2. Run Makefile 
 ```
 make test
+```
+3. Output ISP pipeline video
+```
+make viz
 ```
 
 # Reference
