@@ -17,7 +17,7 @@ Image Signal Processor Pipeline using Halide
 
 5.Gamma correct
 
-6.Sharpen
+6.Sharp
 
 # Image Signal Processor Pipeline Video
 https://user-images.githubusercontent.com/58883801/141746628-aa8d2ac3-017f-4d34-8767-c854abfec547.mp4
