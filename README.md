@@ -4,10 +4,10 @@ Image Signal Processor Pipeline using Halide
 # Requirements
 1.Halide 12.0.0 or above: https://github.com/halide/Halide
 
-2.
+2.If you want to output pipeline video, ffmpeg 4.2.4 or above is required: https://ubuntu.pkgs.org/20.04/ubuntu-updates-universe-amd64/ffmpeg_4.2.4-1ubuntu0.1_amd64.deb.html
 
 # Methods
-1.Input Raw image(GRBG)
+1.Input Raw image(Bayer pattern: GRBG)
 
 2.Denoise image
 
@@ -36,4 +36,4 @@ make test
 ```
 
 # Reference
-
+ISP method is reference to https://github.com/halide/Halide/tree/master/apps/camera_pipe
