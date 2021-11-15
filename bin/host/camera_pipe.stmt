@@ -1,0 +1,436 @@
+module name=camera_pipe, target=x86-64-linux-avx-avx2-f16c-fma-sse41
+external_plus_metadata func camera_pipe (input, matix_3200, matrix_7000, color_temp, gamma, contrast, sharpen_strenght, blackLevel, whiteLevel, processed) {
+assert((uint64)reinterpret((halide_buffer_t *)processed.buffer) != (uint64)0, halide_error_buffer_argument_is_null("processed"))
+assert((uint64)reinterpret((halide_buffer_t *)matrix_7000.buffer) != (uint64)0, halide_error_buffer_argument_is_null("matrix_7000"))
+assert((uint64)reinterpret((halide_buffer_t *)matix_3200.buffer) != (uint64)0, halide_error_buffer_argument_is_null("matix_3200"))
+assert((uint64)reinterpret((halide_buffer_t *)input.buffer) != (uint64)0, halide_error_buffer_argument_is_null("input"))
+let input = (void *)_halide_buffer_get_host((halide_buffer_t *)input.buffer)
+let input.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)input.buffer)
+let input.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)input.buffer)
+let input.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)input.buffer)
+let input.min.0 = _halide_buffer_get_min((halide_buffer_t *)input.buffer, 0)
+let input.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)input.buffer, 0)
+let input.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)input.buffer, 0)
+let input.min.1 = _halide_buffer_get_min((halide_buffer_t *)input.buffer, 1)
+let input.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)input.buffer, 1)
+let input.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)input.buffer, 1)
+let matix_3200 = (void *)_halide_buffer_get_host((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.min.0 = _halide_buffer_get_min((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.min.1 = _halide_buffer_get_min((halide_buffer_t *)matix_3200.buffer, 1)
+let matix_3200.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)matix_3200.buffer, 1)
+let matix_3200.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)matix_3200.buffer, 1)
+let matrix_7000 = (void *)_halide_buffer_get_host((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.min.0 = _halide_buffer_get_min((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.min.1 = _halide_buffer_get_min((halide_buffer_t *)matrix_7000.buffer, 1)
+let matrix_7000.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)matrix_7000.buffer, 1)
+let matrix_7000.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)matrix_7000.buffer, 1)
+let processed = (void *)_halide_buffer_get_host((halide_buffer_t *)processed.buffer)
+let processed.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)processed.buffer)
+let processed.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)processed.buffer)
+let processed.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)processed.buffer)
+let processed.min.0 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 0)
+let processed.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 0)
+let processed.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 0)
+let processed.min.1 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 1)
+let processed.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 1)
+let processed.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 1)
+let processed.min.2 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 2)
+let processed.extent.2 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 2)
+let processed.stride.2 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 2)
+let processed.stride.2.required.s = (processed.extent.0/32)*(processed.extent.1/32)
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)input.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)input.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)input.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 1, 16, 2, (halide_dimension_t *)make_struct(min((processed.extent.0/32)*32, 24) + -14, max((processed.extent.0/32)*32, 24) + 12, 1, 0, 6, ((processed.extent.1/32)*32) + 12, max((processed.extent.0/32)*32, 24) + 12, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matix_3200.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)matix_3200.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)matix_3200.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 2, 32, 2, (halide_dimension_t *)make_struct(0, 4, 1, 0, 0, 3, 4, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matrix_7000.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)matrix_7000.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)matrix_7000.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 2, 32, 2, (halide_dimension_t *)make_struct(0, 4, 1, 0, 0, 3, 4, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)processed.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)processed.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)processed.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 1, 8, 3, (halide_dimension_t *)make_struct(0, (processed.extent.0/32)*32, 1, 0, 0, (processed.extent.1/32)*32, (processed.extent.0/32)*32, 0, 0, 3, processed.stride.2.required.s*1024, 0), (uint64)0)
+}
+if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)processed.buffer) || ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matrix_7000.buffer) || ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)input.buffer) || (uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matix_3200.buffer))))) {
+ assert(input.type == (uint32)69633, halide_error_bad_type("Input buffer input", input.type, (uint32)69633))
+ assert(input.dimensions == 2, halide_error_bad_dimensions("Input buffer input", input.dimensions, 2))
+ assert(matix_3200.type == (uint32)73730, halide_error_bad_type("Input buffer matix_3200", matix_3200.type, (uint32)73730))
+ assert(matix_3200.dimensions == 2, halide_error_bad_dimensions("Input buffer matix_3200", matix_3200.dimensions, 2))
+ assert(matrix_7000.type == (uint32)73730, halide_error_bad_type("Input buffer matrix_7000", matrix_7000.type, (uint32)73730))
+ assert(matrix_7000.dimensions == 2, halide_error_bad_dimensions("Input buffer matrix_7000", matrix_7000.dimensions, 2))
+ assert(processed.type == (uint32)67585, halide_error_bad_type("Output buffer processed", processed.type, (uint32)67585))
+ assert(processed.dimensions == 3, halide_error_bad_dimensions("Output buffer processed", processed.dimensions, 3))
+ assert(((input.min.0 + 14) <= min((processed.extent.0/32)*32, 24)) && ((((processed.extent.0/32)*32) + 22) <= (input.extent.0 + input.min.0)), halide_error_access_out_of_bounds("Input buffer input", 0, min((processed.extent.0/32)*32, 24) + -14, ((processed.extent.0/32)*32) + 21, input.min.0, (input.extent.0 + input.min.0) + -1))
+ assert(0 <= input.extent.0, halide_error_buffer_extents_negative("Input buffer input", 0, input.extent.0))
+ assert((input.min.1 <= 6) && ((((processed.extent.1/32)*32) + 18) <= (input.extent.1 + input.min.1)), halide_error_access_out_of_bounds("Input buffer input", 1, 6, ((processed.extent.1/32)*32) + 17, input.min.1, (input.extent.1 + input.min.1) + -1))
+ assert(0 <= input.extent.1, halide_error_buffer_extents_negative("Input buffer input", 1, input.extent.1))
+ assert((matix_3200.min.0 <= 0) && (4 <= (matix_3200.extent.0 + matix_3200.min.0)), halide_error_access_out_of_bounds("Input buffer matix_3200", 0, 0, 3, matix_3200.min.0, (matix_3200.extent.0 + matix_3200.min.0) + -1))
+ assert(0 <= matix_3200.extent.0, halide_error_buffer_extents_negative("Input buffer matix_3200", 0, matix_3200.extent.0))
+ assert((matix_3200.min.1 <= 0) && (3 <= (matix_3200.extent.1 + matix_3200.min.1)), halide_error_access_out_of_bounds("Input buffer matix_3200", 1, 0, 2, matix_3200.min.1, (matix_3200.extent.1 + matix_3200.min.1) + -1))
+ assert(0 <= matix_3200.extent.1, halide_error_buffer_extents_negative("Input buffer matix_3200", 1, matix_3200.extent.1))
+ assert((matrix_7000.min.0 <= 0) && (4 <= (matrix_7000.extent.0 + matrix_7000.min.0)), halide_error_access_out_of_bounds("Input buffer matrix_7000", 0, 0, 3, matrix_7000.min.0, (matrix_7000.extent.0 + matrix_7000.min.0) + -1))
+ assert(0 <= matrix_7000.extent.0, halide_error_buffer_extents_negative("Input buffer matrix_7000", 0, matrix_7000.extent.0))
+ assert((matrix_7000.min.1 <= 0) && (3 <= (matrix_7000.extent.1 + matrix_7000.min.1)), halide_error_access_out_of_bounds("Input buffer matrix_7000", 1, 0, 2, matrix_7000.min.1, (matrix_7000.extent.1 + matrix_7000.min.1) + -1))
+ assert(0 <= matrix_7000.extent.1, halide_error_buffer_extents_negative("Input buffer matrix_7000", 1, matrix_7000.extent.1))
+ assert((processed.min.0 <= 0) && (0 <= ((processed.extent.0 % 32) + processed.min.0)), halide_error_access_out_of_bounds("Output buffer processed", 0, 0, ((processed.extent.0/32)*32) + -1, processed.min.0, (processed.extent.0 + processed.min.0) + -1))
+ assert(0 <= processed.extent.0, halide_error_buffer_extents_negative("Output buffer processed", 0, processed.extent.0))
+ assert((processed.min.1 <= 0) && (0 <= ((processed.extent.1 % 32) + processed.min.1)), halide_error_access_out_of_bounds("Output buffer processed", 1, 0, ((processed.extent.1/32)*32) + -1, processed.min.1, (processed.extent.1 + processed.min.1) + -1))
+ assert(0 <= processed.extent.1, halide_error_buffer_extents_negative("Output buffer processed", 1, processed.extent.1))
+ assert((processed.min.2 <= 0) && (3 <= (processed.extent.2 + processed.min.2)), halide_error_access_out_of_bounds("Output buffer processed", 2, 0, 2, processed.min.2, (processed.extent.2 + processed.min.2) + -1))
+ assert(0 <= processed.extent.2, halide_error_buffer_extents_negative("Output buffer processed", 2, processed.extent.2))
+ assert(input.stride.0 == 1, halide_error_constraint_violated("input.stride.0", input.stride.0, "1", 1))
+ assert(matix_3200.stride.0 == 1, halide_error_constraint_violated("matix_3200.stride.0", matix_3200.stride.0, "1", 1))
+ assert(matrix_7000.stride.0 == 1, halide_error_constraint_violated("matrix_7000.stride.0", matrix_7000.stride.0, "1", 1))
+ assert(processed.stride.0 == 1, halide_error_constraint_violated("processed.stride.0", processed.stride.0, "1", 1))
+ let input.total_extent.1 = int64(input.extent.1)*int64(input.extent.0)
+ let matix_3200.total_extent.1 = int64(matix_3200.extent.1)*int64(matix_3200.extent.0)
+ let matrix_7000.total_extent.1 = int64(matrix_7000.extent.1)*int64(matrix_7000.extent.0)
+ let processed.total_extent.1 = int64(processed.extent.1)*int64(processed.extent.0)
+ let processed.total_extent.2 = processed.total_extent.1*int64(processed.extent.2)
+ assert(uint64(input.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("input", uint64(input.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(input.extent.1)*int64(input.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("input", (uint64)abs(int64(input.extent.1)*int64(input.stride.1)), (uint64)2147483647))
+ assert(input.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("input", input.total_extent.1, (int64)2147483647))
+ assert(uint64(matix_3200.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matix_3200", uint64(matix_3200.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(matix_3200.extent.1)*int64(matix_3200.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matix_3200", (uint64)abs(int64(matix_3200.extent.1)*int64(matix_3200.stride.1)), (uint64)2147483647))
+ assert(matix_3200.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("matix_3200", matix_3200.total_extent.1, (int64)2147483647))
+ assert(uint64(matrix_7000.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matrix_7000", uint64(matrix_7000.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(matrix_7000.extent.1)*int64(matrix_7000.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matrix_7000", (uint64)abs(int64(matrix_7000.extent.1)*int64(matrix_7000.stride.1)), (uint64)2147483647))
+ assert(matrix_7000.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("matrix_7000", matrix_7000.total_extent.1, (int64)2147483647))
+ assert(uint64(processed.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", uint64(processed.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(processed.extent.1)*int64(processed.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", (uint64)abs(int64(processed.extent.1)*int64(processed.stride.1)), (uint64)2147483647))
+ assert(processed.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("processed", processed.total_extent.1, (int64)2147483647))
+ assert((uint64)abs(int64(processed.extent.2)*int64(processed.stride.2)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", (uint64)abs(int64(processed.extent.2)*int64(processed.stride.2)), (uint64)2147483647))
+ assert(processed.total_extent.2 <= (int64)2147483647, halide_error_buffer_extents_too_large("processed", processed.total_extent.2, (int64)2147483647))
+ assert(!input.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer input"))
+ assert(!matix_3200.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer matix_3200"))
+ assert(!matrix_7000.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer matrix_7000"))
+ assert(!processed.device_dirty, halide_error_device_dirty_with_no_device_support("Output buffer processed"))
+ assert(input != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer input"))
+ assert(matix_3200 != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer matix_3200"))
+ assert(matrix_7000 != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer matrix_7000"))
+ assert(processed != (void *)reinterpret((uint64)0), halide_error_host_is_null("Output buffer processed"))
+ allocate curve[uint8 * 1024]
+ produce curve {
+  let t3742 = (float32)pow_f32(2.000000f, (float32)contrast*0.010000f)
+  let t3741 = 1.000000f/(float32)gamma
+  let t3740 = 1.000000f/float32((whiteLevel - blackLevel))
+  for (curve.s0.v0, 0, 1024) {
+   let t3623 = (float32)pow_f32(max(min(t3740*float32((curve.s0.v0 - blackLevel)), 1.000000f), 0.000000f), t3741)
+   curve[curve.s0.v0] = select(blackLevel < curve.s0.v0, select(whiteLevel < curve.s0.v0, (uint8)255, uint8((max(min(select(0.500000f < t3623, 1.000000f - ((1.000000f - t3623)*((((1.000000f - t3623)*((t3742*2.000000f) + -2.000000f)) - t3742) + 2.000000f)), (((((t3742*2.000000f) + -2.000000f)*t3623) - t3742) + 2.000000f)*t3623)*255.000000f, 254.500000f), -0.500000f) + 0.500000f))), (uint8)0)
+  }
+ }
+ allocate f26[int16 * 12]
+ produce f26 {
+  let t3747 = 1.000000f/(float32)color_temp
+  let t3746 = (t3747*5894.736816f) + -0.842105f
+  let t3744 = (t3747*-5894.736816f) + 1.842105f
+  let t3745 = (matrix_7000.min.1*matrix_7000.stride.1) + matrix_7000.min.0
+  let t3743 = (matix_3200.min.1*matix_3200.stride.1) + matix_3200.min.0
+  for (f26.s0.v1, 0, 3) {
+   let t3750 = f26.s0.v1*4
+   let t3749 = (f26.s0.v1*matrix_7000.stride.1) - t3745
+   let t3748 = (f26.s0.v1*matix_3200.stride.1) - t3743
+   for (f26.s0.v0, 0, 4) {
+    f26[f26.s0.v0 + t3750] = int16((((matix_3200[f26.s0.v0 + t3748]*t3744) + (matrix_7000[f26.s0.v0 + t3749]*t3746))*256.000000f))
+   }
+  }
+ }
+ allocate sharpen_strength_x32[uint8 * 1]
+ produce sharpen_strength_x32 {
+  sharpen_strength_x32[0] = uint8(max(min((float32)sharpen_strenght*32.000000f, 255.000000f), 0.000000f))
+ }
+ assert((0 <= processed.min.1) && (((processed.extent.1 % 32) + processed.min.1) <= 0), halide_error_explicit_bounds_too_small("v1", "processed", 0, ((processed.extent.1/32)*32) + -1, processed.min.1, (processed.extent.1 + processed.min.1) + -1))
+ assert((0 <= processed.min.0) && (((processed.extent.0 % 32) + processed.min.0) <= 0), halide_error_explicit_bounds_too_small("v0", "processed", 0, ((processed.extent.0/32)*32) + -1, processed.min.0, (processed.extent.0 + processed.min.0) + -1))
+ assert((0 <= processed.min.2) && ((processed.extent.2 + processed.min.2) <= 3), halide_error_explicit_bounds_too_small("v2", "processed", 0, 2, processed.min.2, (processed.extent.2 + processed.min.2) + -1))
+ produce processed {
+  consume sharpen_strength_x32 {
+   consume f26 {
+    consume curve {
+     let t3774 = input.min.1*input.stride.1
+     let t3775 = processed.extent.0/32
+     let t3776 = t3775*32
+     let t3777 = min(t3776, 24)
+     let t3778 = processed.extent.0/64
+     let t3779 = t3775*16
+     let t3780 = max(t3776, 24)
+     let t3753 = max((t3778*32) + 14, t3779)
+     let t3756 = (t3780 + 43)/32
+     let t3751 = processed.extent.1/32
+     let t3752 = max((t3778*64) + 56, t3776) - t3777
+     let t3766 = (t3776 - t3774) - input.min.0
+     let t3757 = (((14 - input.min.1)*input.stride.1) + t3777) - input.min.0
+     let t3759 = input.min.0 + t3774
+     let t3755 = input.extent.1 + input.min.1
+     parallel (processed.s0.v1.v3.v4, 0, t3751) {
+      allocate f1[int16 * (t3752 + 32) * 4]
+      allocate deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[int32 * 1] in Stack
+      deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[int32 * 1] in Stack
+      deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate deinterleaved[int16 * (t3753 + 19) * 4 * 4]
+      allocate f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[int32 * 1] in Stack
+      f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[0] = (processed.s0.v1.v3.v4*16) + -1
+      allocate f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[int32 * 1] in Stack
+      f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] = (processed.s0.v1.v3.v4*16) + -1
+      allocate f7[int16 * (t3753 + 18) * 4]
+      allocate f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[int32 * 1] in Stack
+      f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[int32 * 1] in Stack
+      f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate f13[int16 * (t3753 + 18) * 4]
+      allocate f28[uint8 * (t3776 + 32) * 34 * 3]
+      let t3781 = processed.s0.v1.v3.v4*32
+      let t3782 = processed.s0.v1.v3.v4*16
+      for (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 0, 20) {
+       let f28.s0.v1.min_2.s = max(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782)*2) + -6, t3781)
+       let f7.s0.v1.min_2.s.s = max(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 1) + t3782
+       produce f1 {
+        if ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782)*2) + 12) <= t3755) {
+         let t3795 = ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + -4)*input.stride.1)*2) + t3757
+         for (prefetch_reduce_input.1, 0, 6) {
+          let t3796 = (input.stride.1*prefetch_reduce_input.1) + t3795
+          for (prefetch_split_input.0, 0, t3756) {
+           (uint16)prefetch(input, ((prefetch_split_input.0*64) + t3796) + -14, 1, 32)
+          }
+         }
+        }
+        let t3804 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782
+        let t3805 = t3804*2
+        let t3806 = t3752 + 32
+        let t3797 = (t3804 + -4)*input.stride.1
+        let t3800 = input.stride.1*18
+        let t3798 = input.stride.1*16
+        let t3799 = input.stride.1*14
+        let t3801 = (((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*t3806)*2) - t3777
+        let t3803 = (((t3805 + 1) % 4)*t3806) - t3777
+        let t3802 = ((t3805 + -7)*input.stride.1) - t3759
+        for (f1.s0.v0.v0, 0, t3775) {
+         let t3625 = (((f1.s0.v0.v0*16) + t3797)*2) - t3759
+         let t3721 = t3625 + t3798
+         f1[ramp(((f1.s0.v0.v0*32) + t3801) + 24, 1, 32) aligned(8, 0)] = max(min(max(max(max(int16x32(input[ramp((t3625 + t3799) + 12, 1, 32)]), int16x32(input[ramp((t3625 + t3800) + 12, 1, 32)])), int16x32(input[ramp(t3721 + 14, 1, 32)])), int16x32(input[ramp(t3721 + 10, 1, 32)])), int16x32(input[ramp(t3721 + 12, 1, 32)])), x32((int16)0))
+         let t3628 = (f1.s0.v0.v0*32) + t3802
+         let t3722 = t3628 + t3798
+         f1[ramp(((f1.s0.v0.v0*32) + t3803) + 24, 1, 32) aligned(8, 0)] = max(min(max(max(max(int16x32(input[ramp((t3628 + t3799) + 12, 1, 32)]), int16x32(input[ramp((t3628 + t3800) + 12, 1, 32)])), int16x32(input[ramp(t3722 + 14, 1, 32)])), int16x32(input[ramp(t3722 + 10, 1, 32)])), int16x32(input[ramp(t3722 + 12, 1, 32)])), x32((int16)0))
+        }
+        let t3630 = (((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + -4)*input.stride.1) + t3779)*2) - t3759
+        let t3723 = (input.stride.1*16) + t3630
+        f1[ramp(((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*(t3752 + 32))*2) + t3780) + -24, 1, 32) aligned(8, 0)] = max(min(max(max(max(int16x32(input[ramp(((input.stride.1*14) + t3630) + -12, 1, 32)]), int16x32(input[ramp(((input.stride.1*18) + t3630) + -12, 1, 32)])), int16x32(input[ramp(t3723 + -10, 1, 32)])), int16x32(input[ramp(t3723 + -14, 1, 32)])), int16x32(input[ramp(t3723 + -12, 1, 32)])), x32((int16)0))
+        let t3633 = ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782)*2) + -7)*input.stride.1) + t3766
+        let t3724 = (input.stride.1*16) + t3633
+        f1[ramp(((((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782)*2) + 1) % 4)*(t3752 + 32)) + t3780) + -24, 1, 32) aligned(8, 0)] = max(min(max(max(max(int16x32(input[ramp(((input.stride.1*14) + t3633) + -12, 1, 32)]), int16x32(input[ramp(((input.stride.1*18) + t3633) + -12, 1, 32)])), int16x32(input[ramp(t3724 + -10, 1, 32)])), int16x32(input[ramp(t3724 + -14, 1, 32)])), int16x32(input[ramp(t3724 + -12, 1, 32)])), x32((int16)0))
+       }
+       produce deinterleaved {
+        let t3245 = max(deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + -2)
+        assert(deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + 2), halide_error_bad_fold("deinterleaved", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+        deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[0] = t3245
+        deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] = t3245
+        consume f1 {
+         let t3813 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782
+         let t3814 = ((t3813 + 2) % 4)*(t3753 + 19)
+         let t3807 = (((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*(t3752 + 32))*2) - t3777
+         let t3809 = (t3753*4) + t3814
+         for (deinterleaved.s0.v0.v0, 0, t3778 + 1) {
+          deinterleaved[ramp((deinterleaved.s0.v0.v0*32) + t3814, 1, 32)] = f1[ramp(((deinterleaved.s0.v0.v0*64) + t3807) + 24, 2, 32) aligned(8, 0)]
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + t3809) + 76, 1, 32)] = f1[ramp(((deinterleaved.s0.v0.v0*64) + t3807) + 25, 2, 32) aligned(8, 1)]
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + ((t3753*8) + (((t3813 + 2) % 4)*(t3753 + 19)))) + 152, 1, 32)] = f1[ramp(((deinterleaved.s0.v0.v0*64) + (((((t3813*2) + 1) % 4)*(t3752 + 32)) - t3777)) + 24, 2, 32) aligned(8, 0)]
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + ((t3753*12) + (((t3813 + 2) % 4)*(t3753 + 19)))) + 228, 1, 32)] = f1[ramp(((deinterleaved.s0.v0.v0*64) + (((((t3813*2) + 1) % 4)*(t3752 + 32)) - t3777)) + 25, 2, 32) aligned(8, 1)]
+         }
+        }
+       }
+       assert(let t3727 = (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased < 3) in (let t3729 = deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] in (((select(t3727, processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782, max(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782, min(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 3) + (f28.s0.v1.min_2.s/2))) + -2) <= t3729) && (t3729 < select(t3727, f7.s0.v1.min_2.s.s + 1, min(f28.s0.v1.min_2.s/2, f7.s0.v1.min_2.s.s + -1) + 2)))), halide_error_bad_fold("deinterleaved", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+       if (1 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+        consume deinterleaved {
+         produce f7 {
+          let t3147 = max(f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + -2)
+          assert(f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + 2), halide_error_bad_fold("f7", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+          f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[0] = t3147
+          f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] = t3147
+          produce f13 {
+           let t3116 = max(f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + -3)
+           assert(f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782) + 1), halide_error_bad_fold("f13", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+           f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[0] = t3116
+           f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] = t3116
+           let t3821 = t3753*12
+           let t3822 = (f7.s0.v1.min_2.s.s + 1) % 4
+           let t3823 = t3753 + 19
+           let t3824 = t3822*t3823
+           let t3825 = t3753 + 18
+           let t3826 = (f7.s0.v1.min_2.s.s + 2) % 4
+           let t3815 = t3823*t3826
+           let t3818 = t3825*t3826
+           let t3820 = t3822*t3825
+           for (f7.s0.v0.fused.v0, 0, t3778 + 1) {
+            let t3641 = (f7.s0.v0.fused.v0*32) + t3815
+            let t3642 = deinterleaved[ramp(t3641 + 1, 1, 32)]
+            let t3643 = deinterleaved[ramp(t3641, 1, 32)]
+            let t3644 = deinterleaved[ramp(((f7.s0.v0.fused.v0*32) + (t3821 + t3824)) + 228, 1, 32)]
+            let t3645 = deinterleaved[ramp((t3641 + t3821) + 228, 1, 32)]
+            f7[ramp((f7.s0.v0.fused.v0*32) + t3818, 1, 32) aligned(2, 0)] = select((uint16x32)absd(t3642, t3643) < (uint16x32)absd(t3644, t3645), (int16x32)rounding_halving_add(t3642, t3643), (int16x32)rounding_halving_add(t3644, t3645))
+            let t3647 = (f7.s0.v0.fused.v0*32) + t3824
+            let t3649 = deinterleaved[ramp((t3647 + t3821) + 228, 1, 32)]
+            let t3650 = deinterleaved[ramp((t3647 + t3821) + 229, 1, 32)]
+            let t3651 = deinterleaved[ramp(((f7.s0.v0.fused.v0*32) + t3815) + 1, 1, 32)]
+            let t3652 = deinterleaved[ramp(t3647 + 1, 1, 32)]
+            f13[ramp((f7.s0.v0.fused.v0*32) + t3820, 1, 32) aligned(2, 0)] = select((uint16x32)absd(t3649, t3650) < (uint16x32)absd(t3651, t3652), (int16x32)rounding_halving_add(t3649, t3650), (int16x32)rounding_halving_add(t3651, t3652))
+           }
+          }
+         }
+         assert(let t3730 = f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] in ((((min(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 3) + (f28.s0.v1.min_2.s/2)) + -2) <= t3730) && (t3730 < ((f28.s0.v1.min_2.s/2) + 3))), halide_error_bad_fold("f7", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+         assert(let t3731 = f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] in ((((min(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 3) + (f28.s0.v1.min_2.s/2)) + -3) <= t3731) && (t3731 < ((f28.s0.v1.min_2.s/2) + 2))), halide_error_bad_fold("f13", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+         if (3 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+          consume f13 {
+           consume f7 {
+            produce f28 {
+             let t3844 = t3753*4
+             let t3845 = f28.s0.v1.min_2.s/2
+             let t3846 = t3845 % 4
+             let t3847 = t3753 + 19
+             let t3848 = t3846*t3847
+             let t3849 = t3753*8
+             let t3850 = (t3845 + 3) % 4
+             let t3851 = t3847*t3850
+             let t3852 = t3775*-32
+             let t3853 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased*2
+             let t3854 = t3776 + 32
+             let t3855 = (t3853 + -5)*t3854
+             let t3856 = (t3853 + -4)*t3854
+             let t3857 = t3775*1056
+             let t3858 = t3775*2144
+             let t3859 = t3753 + 18
+             let t3829 = t3846*t3859
+             let t3828 = t3850*t3859
+             let t3843 = t3856 + t3858
+             let t3840 = t3855 + t3858
+             let t3842 = t3856 + t3857
+             let t3839 = t3855 + t3857
+             let t3841 = t3852 + t3856
+             let t3838 = t3852 + t3855
+             for (f28.s0.v0.v0, 0, t3775 + 1) {
+              allocate output[int16 * 32 * 2 * 3]
+              produce output {
+               let t3657 = (f28.s0.v0.v0*16) + t3828
+               let t3658.s = f7[ramp(t3657 + 1, 1, 16) aligned(2, 1)]
+               let t3660 = (f28.s0.v0.v0*16) + t3829
+               let t3661.s = f7[ramp(t3660 + 1, 1, 16) aligned(2, 1)]
+               let t3662 = (f28.s0.v0.v0*16) + (t3844 + t3851)
+               let t3663 = deinterleaved[ramp(t3662 + 77, 1, 16)]
+               let t3665 = (f28.s0.v0.v0*16) + (t3844 + t3848)
+               let t3666 = deinterleaved[ramp(t3665 + 77, 1, 16)]
+               let t3668 = deinterleaved[ramp(t3662 + 78, 1, 16)]
+               let t3669 = deinterleaved[ramp(t3665 + 78, 1, 16)]
+               let t3670 = f13[ramp(t3657 + 1, 1, 16) aligned(2, 1)]
+               output[ramp(0, 1, 32)] = interleave_vectors((deinterleaved[ramp(((f28.s0.v0.v0*16) + ((t3753*12) + t3851)) + 229, 1, 16)] - (int16x16)rounding_halving_add(t3658.s, t3661.s)) + (int16x16)rounding_halving_add(t3663, t3666), select((uint16x16)absd(t3668, t3666) < (uint16x16)absd(t3663, t3669), (t3670 - (int16x16)rounding_halving_add(f7[ramp(t3657 + 2, 1, 16) aligned(2, 0)], t3661.s)) + (int16x16)rounding_halving_add(t3668, t3666), (t3670 - (int16x16)rounding_halving_add(t3658.s, f7[ramp(t3660 + 2, 1, 16) aligned(2, 0)])) + (int16x16)rounding_halving_add(t3663, t3669)))
+               output[ramp(64, 1, 32)] = interleave_vectors(deinterleaved[ramp(((f28.s0.v0.v0*16) + ((t3753*12) + ((t3753 + 19)*t3850))) + 229, 1, 16)], f13[ramp((((t3753 + 18)*t3850) + (f28.s0.v0.v0*16)) + 1, 1, 16) aligned(2, 1)])
+               let t3674 = (f28.s0.v0.v0*16) + t3828
+               let t3675 = (f28.s0.v0.v0*16) + (t3849 + t3851)
+               let t3676 = deinterleaved[ramp(t3675 + 154, 1, 16)]
+               output[ramp(128, 1, 32)] = interleave_vectors((deinterleaved[ramp(((f28.s0.v0.v0*16) + ((t3753*12) + t3851)) + 229, 1, 16)] - (int16x16)rounding_halving_add(f13[ramp(t3674, 1, 16) aligned(2, 0)], f13[ramp(t3674 + 1, 1, 16) aligned(2, 1)])) + (int16x16)rounding_halving_add(deinterleaved[ramp(t3675 + 153, 1, 16)], t3676), t3676)
+               let t3679 = (f28.s0.v0.v0*16) + (t3844 + t3848)
+               let t3680 = deinterleaved[ramp(t3679 + 77, 1, 16)]
+               let t3681 = (f28.s0.v0.v0*16) + t3829
+               output[ramp(32, 1, 32)] = interleave_vectors(t3680, (deinterleaved[ramp(((f28.s0.v0.v0*16) + t3848) + 2, 1, 16)] - (int16x16)rounding_halving_add(f7[ramp(t3681 + 2, 1, 16) aligned(2, 0)], f7[ramp(t3681 + 1, 1, 16) aligned(2, 1)])) + (int16x16)rounding_halving_add(t3680, deinterleaved[ramp(t3679 + 78, 1, 16)]))
+               output[ramp(96, 1, 32)] = interleave_vectors(f7[ramp((((t3753 + 18)*t3846) + (f28.s0.v0.v0*16)) + 1, 1, 16) aligned(2, 1)], deinterleaved[ramp((((t3753 + 19)*t3846) + (f28.s0.v0.v0*16)) + 2, 1, 16)])
+               let t3685 = (f28.s0.v0.v0*16) + (t3848 + t3849)
+               let t3686 = deinterleaved[ramp(t3685 + 153, 1, 16)]
+               let t3688 = (f28.s0.v0.v0*16) + (t3849 + t3851)
+               let t3689 = deinterleaved[ramp(t3688 + 154, 1, 16)]
+               let t3690 = deinterleaved[ramp(t3685 + 154, 1, 16)]
+               let t3691 = deinterleaved[ramp(t3688 + 153, 1, 16)]
+               let t3692 = (f28.s0.v0.v0*16) + t3829
+               let t3693 = f7[ramp(t3692 + 1, 1, 16) aligned(2, 1)]
+               let t3694 = (f28.s0.v0.v0*16) + t3828
+               let t3695.s = f13[ramp(t3694 + 1, 1, 16) aligned(2, 1)]
+               let t3697.s = f13[ramp(t3692 + 1, 1, 16) aligned(2, 1)]
+               output[ramp(160, 1, 32)] = interleave_vectors(select((uint16x16)absd(t3686, t3689) < (uint16x16)absd(t3690, t3691), (t3693 - (int16x16)rounding_halving_add(f13[ramp(t3692, 1, 16) aligned(2, 0)], t3695.s)) + (int16x16)rounding_halving_add(t3686, t3689), (t3693 - (int16x16)rounding_halving_add(t3697.s, f13[ramp(t3694, 1, 16) aligned(2, 0)])) + (int16x16)rounding_halving_add(t3690, t3691)), (deinterleaved[ramp(((f28.s0.v0.v0*16) + t3848) + 2, 1, 16)] - (int16x16)rounding_halving_add(t3697.s, t3695.s)) + (int16x16)rounding_halving_add(t3690, t3689))
+              }
+              allocate f27[int16 * 32 * 2 * 3]
+              produce f27 {
+               consume output {
+                for (f27.s0.v1.rebased, 0, 2) {
+                 f27[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)] = int16x32((int32x32)shift_right((int32x32)widening_mul(output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)], x32(f26[0])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)], x32(f26[1])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)], x32(f26[2])) + x32(int32(f26[3])))), x32((uint32)8)))
+                 f27[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)] = int16x32((int32x32)shift_right((int32x32)widening_mul(output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)], x32(f26[4])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)], x32(f26[5])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)], x32(f26[6])) + x32(int32(f26[7])))), x32((uint32)8)))
+                 f27[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)] = int16x32((int32x32)shift_right((int32x32)widening_mul(output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)], x32(f26[8])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)], x32(f26[9])) + ((int32x32)widening_mul(output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)], x32(f26[10])) + x32(int32(f26[11])))), x32((uint32)8)))
+                }
+               }
+              }
+              free output
+              consume f27 {
+               f28[ramp(((f28.s0.v0.v0*32) + t3838) + -32, 1, 32)] = curve[int32x32(max(min(f27[ramp(0, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               f28[ramp(((f28.s0.v0.v0*32) + t3839) + 1056, 1, 32)] = curve[int32x32(max(min(f27[ramp(64, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               f28[ramp(((f28.s0.v0.v0*32) + t3840) + 2144, 1, 32)] = curve[int32x32(max(min(f27[ramp(128, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               f28[ramp(((f28.s0.v0.v0*32) + t3841) + -32, 1, 32)] = curve[int32x32(max(min(f27[ramp(32, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               f28[ramp(((f28.s0.v0.v0*32) + t3842) + 1056, 1, 32)] = curve[int32x32(max(min(f27[ramp(96, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               f28[ramp(((f28.s0.v0.v0*32) + t3843) + 2144, 1, 32)] = curve[int32x32(max(min(f27[ramp(160, 1, 32)], x32((int16)1023)), x32((int16)0)))]
+               free f27
+              }
+             }
+            }
+            if (4 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+             consume f28 {
+              let t3862 = (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t3782)*2
+              let t3860 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased*2
+              for (processed.s0.v1.v5, 0, 2) {
+               let t3873 = ((processed.s0.v1.v5 + t3862) + -8)*processed.stride.1
+               let t3874 = ((processed.s0.v1.v5 + t3860) + -7)*(t3776 + 32)
+               let t3870 = processed.stride.2 + t3873
+               let t3871 = (t3775*2176) + t3874
+               let t3869 = (t3775*1088) + t3874
+               let t3872 = (processed.stride.2*2) + t3873
+               for (processed.s0.v0.v0, 0, t3775) {
+                let t3699 = (processed.s0.v0.v0*32) + t3874
+                let t3700 = f28[ramp(t3699 + 1, 1, 32) aligned(32, 1)]
+                let t3734 = (t3775*-32) + t3699
+                let t3735 = t3699 + t3776
+                processed[ramp((processed.s0.v0.v0*32) + t3873, 1, 32)] = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t3700, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3734 + -32, 1, 32)], f28[ramp(t3735 + 32, 1, 32) aligned(32, 0)]), f28[ramp(t3699, 1, 32) aligned(32, 0)]), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3734 + -30, 1, 32)], f28[ramp(t3735 + 34, 1, 32) aligned(32, 2)]), f28[ramp(t3699 + 2, 1, 32) aligned(32, 2)])), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3734 + -31, 1, 32)], f28[ramp(t3735 + 33, 1, 32) aligned(32, 1)]), t3700)))*x32(int16(sharpen_strength_x32[0])), x32((uint16)5)) + int16x32(t3700), x32((int16)255)), x32((int16)0)))
+                let t3704 = (processed.s0.v0.v0*32) + t3869
+                let t3705 = f28[ramp(t3704 + 1089, 1, 32) aligned(32, 1)]
+                let t3736 = (t3775*-32) + t3704
+                let t3737 = t3704 + t3776
+                processed[ramp((processed.s0.v0.v0*32) + t3870, 1, 32)] = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t3705, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3736 + 1056, 1, 32)], f28[ramp(t3737 + 1120, 1, 32) aligned(32, 0)]), f28[ramp(t3704 + 1088, 1, 32) aligned(32, 0)]), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3736 + 1058, 1, 32)], f28[ramp(t3737 + 1122, 1, 32) aligned(32, 2)]), f28[ramp(t3704 + 1090, 1, 32) aligned(32, 2)])), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3736 + 1057, 1, 32)], f28[ramp(t3737 + 1121, 1, 32) aligned(32, 1)]), t3705)))*x32(int16(sharpen_strength_x32[0])), x32((uint16)5)) + int16x32(t3705), x32((int16)255)), x32((int16)0)))
+                let t3709 = (processed.s0.v0.v0*32) + t3871
+                let t3710 = f28[ramp(t3709 + 2177, 1, 32) aligned(32, 1)]
+                let t3738 = (t3775*-32) + t3709
+                let t3739 = t3709 + t3776
+                processed[ramp((processed.s0.v0.v0*32) + t3872, 1, 32)] = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t3710, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3738 + 2144, 1, 32)], f28[ramp(t3739 + 2208, 1, 32) aligned(32, 0)]), f28[ramp(t3709 + 2176, 1, 32) aligned(32, 0)]), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3738 + 2146, 1, 32)], f28[ramp(t3739 + 2210, 1, 32) aligned(32, 2)]), f28[ramp(t3709 + 2178, 1, 32) aligned(32, 2)])), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add(f28[ramp(t3738 + 2145, 1, 32)], f28[ramp(t3739 + 2209, 1, 32) aligned(32, 1)]), t3710)))*x32(int16(sharpen_strength_x32[0])), x32((uint16)5)) + int16x32(t3710), x32((int16)255)), x32((int16)0)))
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+      free f1
+      free deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head
+      free deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next
+      free deinterleaved
+      free f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head
+      free f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next
+      free f7
+      free f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head
+      free f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next
+      free f13
+      free f28
+     }
+    }
+   }
+  }
+ }
+ free curve
+ free f26
+ free sharpen_strength_x32
+}
+}
+
+

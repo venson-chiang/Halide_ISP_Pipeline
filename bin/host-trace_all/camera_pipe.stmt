@@ -1,0 +1,723 @@
+module name=camera_pipe, target=x86-64-linux-avx-avx2-f16c-fma-sse41-trace_all
+external_plus_metadata func camera_pipe (input, matix_3200, matrix_7000, color_temp, gamma, contrast, sharpen_strenght, blackLevel, whiteLevel, processed) {
+assert((uint64)reinterpret((halide_buffer_t *)processed.buffer) != (uint64)0, halide_error_buffer_argument_is_null("processed"))
+assert((uint64)reinterpret((halide_buffer_t *)matrix_7000.buffer) != (uint64)0, halide_error_buffer_argument_is_null("matrix_7000"))
+assert((uint64)reinterpret((halide_buffer_t *)matix_3200.buffer) != (uint64)0, halide_error_buffer_argument_is_null("matix_3200"))
+assert((uint64)reinterpret((halide_buffer_t *)input.buffer) != (uint64)0, halide_error_buffer_argument_is_null("input"))
+let input = (void *)_halide_buffer_get_host((halide_buffer_t *)input.buffer)
+let input.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)input.buffer)
+let input.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)input.buffer)
+let input.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)input.buffer)
+let input.min.0 = _halide_buffer_get_min((halide_buffer_t *)input.buffer, 0)
+let input.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)input.buffer, 0)
+let input.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)input.buffer, 0)
+let input.min.1 = _halide_buffer_get_min((halide_buffer_t *)input.buffer, 1)
+let input.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)input.buffer, 1)
+let input.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)input.buffer, 1)
+let matix_3200 = (void *)_halide_buffer_get_host((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)matix_3200.buffer)
+let matix_3200.min.0 = _halide_buffer_get_min((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)matix_3200.buffer, 0)
+let matix_3200.min.1 = _halide_buffer_get_min((halide_buffer_t *)matix_3200.buffer, 1)
+let matix_3200.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)matix_3200.buffer, 1)
+let matix_3200.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)matix_3200.buffer, 1)
+let matrix_7000 = (void *)_halide_buffer_get_host((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)matrix_7000.buffer)
+let matrix_7000.min.0 = _halide_buffer_get_min((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)matrix_7000.buffer, 0)
+let matrix_7000.min.1 = _halide_buffer_get_min((halide_buffer_t *)matrix_7000.buffer, 1)
+let matrix_7000.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)matrix_7000.buffer, 1)
+let matrix_7000.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)matrix_7000.buffer, 1)
+let processed = (void *)_halide_buffer_get_host((halide_buffer_t *)processed.buffer)
+let processed.type = (uint32)_halide_buffer_get_type((halide_buffer_t *)processed.buffer)
+let processed.device_dirty = (uint1)_halide_buffer_get_device_dirty((halide_buffer_t *)processed.buffer)
+let processed.dimensions = _halide_buffer_get_dimensions((halide_buffer_t *)processed.buffer)
+let processed.min.0 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 0)
+let processed.extent.0 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 0)
+let processed.stride.0 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 0)
+let processed.min.1 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 1)
+let processed.extent.1 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 1)
+let processed.stride.1 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 1)
+let processed.min.2 = _halide_buffer_get_min((halide_buffer_t *)processed.buffer, 2)
+let processed.extent.2 = _halide_buffer_get_extent((halide_buffer_t *)processed.buffer, 2)
+let processed.stride.2 = _halide_buffer_get_stride((halide_buffer_t *)processed.buffer, 2)
+let processed.stride.2.required.s = (processed.extent.0/32)*(processed.extent.1/32)
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)input.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)input.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)input.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 1, 16, 2, (halide_dimension_t *)make_struct(min((processed.extent.0/32)*32, 24) + -14, max((processed.extent.0/32)*32, 24) + 12, 1, 0, 6, ((processed.extent.1/32)*32) + 12, max((processed.extent.0/32)*32, 24) + 12, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matix_3200.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)matix_3200.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)matix_3200.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 2, 32, 2, (halide_dimension_t *)make_struct(0, 4, 1, 0, 0, 3, 4, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matrix_7000.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)matrix_7000.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)matrix_7000.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 2, 32, 2, (halide_dimension_t *)make_struct(0, 4, 1, 0, 0, 3, 4, 0), (uint64)0)
+}
+if ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)processed.buffer)) {
+ (halide_buffer_t *)_halide_buffer_init((halide_buffer_t *)processed.buffer, (halide_dimension_t *)_halide_buffer_get_shape((halide_buffer_t *)processed.buffer), (void *)reinterpret((uint64)0), (uint64)0, (halide_device_interface_t *)reinterpret((uint64)0), 1, 8, 3, (halide_dimension_t *)make_struct(0, (processed.extent.0/32)*32, 1, 0, 0, (processed.extent.1/32)*32, (processed.extent.0/32)*32, 0, 0, 3, processed.stride.2.required.s*1024, 0), (uint64)0)
+}
+if (!((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)processed.buffer) || ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matrix_7000.buffer) || ((uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)input.buffer) || (uint1)_halide_buffer_is_bounds_query((halide_buffer_t *)matix_3200.buffer))))) {
+ assert(input.type == (uint32)69633, halide_error_bad_type("Input buffer input", input.type, (uint32)69633))
+ assert(input.dimensions == 2, halide_error_bad_dimensions("Input buffer input", input.dimensions, 2))
+ assert(matix_3200.type == (uint32)73730, halide_error_bad_type("Input buffer matix_3200", matix_3200.type, (uint32)73730))
+ assert(matix_3200.dimensions == 2, halide_error_bad_dimensions("Input buffer matix_3200", matix_3200.dimensions, 2))
+ assert(matrix_7000.type == (uint32)73730, halide_error_bad_type("Input buffer matrix_7000", matrix_7000.type, (uint32)73730))
+ assert(matrix_7000.dimensions == 2, halide_error_bad_dimensions("Input buffer matrix_7000", matrix_7000.dimensions, 2))
+ assert(processed.type == (uint32)67585, halide_error_bad_type("Output buffer processed", processed.type, (uint32)67585))
+ assert(processed.dimensions == 3, halide_error_bad_dimensions("Output buffer processed", processed.dimensions, 3))
+ assert(((input.min.0 + 14) <= min((processed.extent.0/32)*32, 24)) && ((((processed.extent.0/32)*32) + 22) <= (input.extent.0 + input.min.0)), halide_error_access_out_of_bounds("Input buffer input", 0, min((processed.extent.0/32)*32, 24) + -14, ((processed.extent.0/32)*32) + 21, input.min.0, (input.extent.0 + input.min.0) + -1))
+ assert(0 <= input.extent.0, halide_error_buffer_extents_negative("Input buffer input", 0, input.extent.0))
+ assert((input.min.1 <= 6) && ((((processed.extent.1/32)*32) + 18) <= (input.extent.1 + input.min.1)), halide_error_access_out_of_bounds("Input buffer input", 1, 6, ((processed.extent.1/32)*32) + 17, input.min.1, (input.extent.1 + input.min.1) + -1))
+ assert(0 <= input.extent.1, halide_error_buffer_extents_negative("Input buffer input", 1, input.extent.1))
+ assert((matix_3200.min.0 <= 0) && (4 <= (matix_3200.extent.0 + matix_3200.min.0)), halide_error_access_out_of_bounds("Input buffer matix_3200", 0, 0, 3, matix_3200.min.0, (matix_3200.extent.0 + matix_3200.min.0) + -1))
+ assert(0 <= matix_3200.extent.0, halide_error_buffer_extents_negative("Input buffer matix_3200", 0, matix_3200.extent.0))
+ assert((matix_3200.min.1 <= 0) && (3 <= (matix_3200.extent.1 + matix_3200.min.1)), halide_error_access_out_of_bounds("Input buffer matix_3200", 1, 0, 2, matix_3200.min.1, (matix_3200.extent.1 + matix_3200.min.1) + -1))
+ assert(0 <= matix_3200.extent.1, halide_error_buffer_extents_negative("Input buffer matix_3200", 1, matix_3200.extent.1))
+ assert((matrix_7000.min.0 <= 0) && (4 <= (matrix_7000.extent.0 + matrix_7000.min.0)), halide_error_access_out_of_bounds("Input buffer matrix_7000", 0, 0, 3, matrix_7000.min.0, (matrix_7000.extent.0 + matrix_7000.min.0) + -1))
+ assert(0 <= matrix_7000.extent.0, halide_error_buffer_extents_negative("Input buffer matrix_7000", 0, matrix_7000.extent.0))
+ assert((matrix_7000.min.1 <= 0) && (3 <= (matrix_7000.extent.1 + matrix_7000.min.1)), halide_error_access_out_of_bounds("Input buffer matrix_7000", 1, 0, 2, matrix_7000.min.1, (matrix_7000.extent.1 + matrix_7000.min.1) + -1))
+ assert(0 <= matrix_7000.extent.1, halide_error_buffer_extents_negative("Input buffer matrix_7000", 1, matrix_7000.extent.1))
+ assert((processed.min.0 <= 0) && (0 <= ((processed.extent.0 % 32) + processed.min.0)), halide_error_access_out_of_bounds("Output buffer processed", 0, 0, ((processed.extent.0/32)*32) + -1, processed.min.0, (processed.extent.0 + processed.min.0) + -1))
+ assert(0 <= processed.extent.0, halide_error_buffer_extents_negative("Output buffer processed", 0, processed.extent.0))
+ assert((processed.min.1 <= 0) && (0 <= ((processed.extent.1 % 32) + processed.min.1)), halide_error_access_out_of_bounds("Output buffer processed", 1, 0, ((processed.extent.1/32)*32) + -1, processed.min.1, (processed.extent.1 + processed.min.1) + -1))
+ assert(0 <= processed.extent.1, halide_error_buffer_extents_negative("Output buffer processed", 1, processed.extent.1))
+ assert((processed.min.2 <= 0) && (3 <= (processed.extent.2 + processed.min.2)), halide_error_access_out_of_bounds("Output buffer processed", 2, 0, 2, processed.min.2, (processed.extent.2 + processed.min.2) + -1))
+ assert(0 <= processed.extent.2, halide_error_buffer_extents_negative("Output buffer processed", 2, processed.extent.2))
+ assert(input.stride.0 == 1, halide_error_constraint_violated("input.stride.0", input.stride.0, "1", 1))
+ assert(matix_3200.stride.0 == 1, halide_error_constraint_violated("matix_3200.stride.0", matix_3200.stride.0, "1", 1))
+ assert(matrix_7000.stride.0 == 1, halide_error_constraint_violated("matrix_7000.stride.0", matrix_7000.stride.0, "1", 1))
+ assert(processed.stride.0 == 1, halide_error_constraint_violated("processed.stride.0", processed.stride.0, "1", 1))
+ let input.total_extent.1 = int64(input.extent.1)*int64(input.extent.0)
+ let matix_3200.total_extent.1 = int64(matix_3200.extent.1)*int64(matix_3200.extent.0)
+ let matrix_7000.total_extent.1 = int64(matrix_7000.extent.1)*int64(matrix_7000.extent.0)
+ let processed.total_extent.1 = int64(processed.extent.1)*int64(processed.extent.0)
+ let processed.total_extent.2 = processed.total_extent.1*int64(processed.extent.2)
+ assert(uint64(input.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("input", uint64(input.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(input.extent.1)*int64(input.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("input", (uint64)abs(int64(input.extent.1)*int64(input.stride.1)), (uint64)2147483647))
+ assert(input.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("input", input.total_extent.1, (int64)2147483647))
+ assert(uint64(matix_3200.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matix_3200", uint64(matix_3200.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(matix_3200.extent.1)*int64(matix_3200.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matix_3200", (uint64)abs(int64(matix_3200.extent.1)*int64(matix_3200.stride.1)), (uint64)2147483647))
+ assert(matix_3200.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("matix_3200", matix_3200.total_extent.1, (int64)2147483647))
+ assert(uint64(matrix_7000.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matrix_7000", uint64(matrix_7000.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(matrix_7000.extent.1)*int64(matrix_7000.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("matrix_7000", (uint64)abs(int64(matrix_7000.extent.1)*int64(matrix_7000.stride.1)), (uint64)2147483647))
+ assert(matrix_7000.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("matrix_7000", matrix_7000.total_extent.1, (int64)2147483647))
+ assert(uint64(processed.extent.0) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", uint64(processed.extent.0), (uint64)2147483647))
+ assert((uint64)abs(int64(processed.extent.1)*int64(processed.stride.1)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", (uint64)abs(int64(processed.extent.1)*int64(processed.stride.1)), (uint64)2147483647))
+ assert(processed.total_extent.1 <= (int64)2147483647, halide_error_buffer_extents_too_large("processed", processed.total_extent.1, (int64)2147483647))
+ assert((uint64)abs(int64(processed.extent.2)*int64(processed.stride.2)) <= (uint64)2147483647, halide_error_buffer_allocation_too_large("processed", (uint64)abs(int64(processed.extent.2)*int64(processed.stride.2)), (uint64)2147483647))
+ assert(processed.total_extent.2 <= (int64)2147483647, halide_error_buffer_extents_too_large("processed", processed.total_extent.2, (int64)2147483647))
+ assert(!input.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer input"))
+ assert(!matix_3200.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer matix_3200"))
+ assert(!matrix_7000.device_dirty, halide_error_device_dirty_with_no_device_support("Input buffer matrix_7000"))
+ assert(!processed.device_dirty, halide_error_device_dirty_with_no_device_support("Output buffer processed"))
+ assert(input != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer input"))
+ assert(matix_3200 != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer matix_3200"))
+ assert(matrix_7000 != (void *)reinterpret((uint64)0), halide_error_host_is_null("Input buffer matrix_7000"))
+ assert(processed != (void *)reinterpret((uint64)0), halide_error_host_is_null("Output buffer processed"))
+ let pipeline.trace_id = halide_trace_helper("camera_pipe", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 8, 0, 0, 0, "")
+ halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "func_type_and_dim: 1 1 8 1 1 0 1024")
+ halide_trace_helper("matix_3200", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "func_type_and_dim: 1 2 32 1 2 0 4 0 3")
+ halide_trace_helper("matrix_7000", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "func_type_and_dim: 1 2 32 1 2 0 4 0 3")
+ halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "func_type_and_dim: 1 0 16 1 2 0 4 0 3")
+ halide_trace_helper("input", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 1 16 1 2 ", min((processed.extent.0/32)*32, 24) + -14, " ", max((processed.extent.0/32)*32, 24) + 12, " 6 ", ((processed.extent.1/32)*32) + 12))
+ halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 2 ", min((processed.extent.0/32)*32, 24) + -28, " ", (max((processed.extent.0/32)*32, ((processed.extent.0/64)*64) + 56) - min((processed.extent.0/32)*32, 24)) + 32, " -4 ", ((processed.extent.1/32)*32) + 8))
+ halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 3 -2 ", max((processed.extent.0/32)*16, ((processed.extent.0/64)*32) + 29) + 4, " -2 ", ((processed.extent.1/32)*16) + 4, " 0 4"))
+ halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 2 -2 ", max((processed.extent.0/32)*16, ((processed.extent.0/64)*32) + 29) + 3, " -1 ", ((processed.extent.1/32)*16) + 3))
+ halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 2 -1 ", max((processed.extent.0/32)*16, ((processed.extent.0/64)*32) + 29) + 3, " -2 ", ((processed.extent.1/32)*16) + 3))
+ halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 3 -1 ", ((processed.extent.0/32)*32) + 2, " -1 ", ((processed.extent.1/32)*32) + 2, " 0 3"))
+ halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 0 16 1 3 -1 ", ((processed.extent.0/32)*32) + 32, " -1 ", ((processed.extent.1/32)*32) + 2, " 0 3"))
+ halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 1 8 1 3 -1 ", ((processed.extent.0/32)*32) + 32, " -1 ", ((processed.extent.1/32)*32) + 2, " 0 3"))
+ halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "func_type_and_dim: 1 1 8 1 0")
+ halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, (char *)stringify("func_type_and_dim: 1 1 8 1 3 0 ", (processed.extent.0/32)*32, " 0 ", (processed.extent.1/32)*32, " 0 3"))
+ halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 1660 360 3 1 0 0 1 0 0  2 nan 256 1 sharpened(final\\x20image) 0 0 0 1  -1 4294967295")
+ halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 10 1000 0  -2 nan nan 1 sharpen\\x20strength 0 0 0 1  -1 4294967295")
+ halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 1360 360 3 1 0 0 1 0 0  2 nan 256 1 gamma-corrected 0 0 0 1  -1 4294967295")
+ halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 580 1000 0  -2 nan nan 1 tone_curve 0 0 0 1  -1 4294967295")
+ halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 1060 360 3 1 0 0 1 0 0  2 nan 1024 1 color-corrected 0 0 0 1  -1 4294967295")
+ halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 770 360 3 1 0 0 1 0 0  2 nan 1024 1 demosaiced 0 0 0 1  -1 4294967295")
+ halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 580 120 3 1 0 0 1 0 220  -2 nan 1024 4 gr 0 0 0 1 r 0 220 0 1 b 0 440 0 1 gb 0 660 0 1  -1 4294967295")
+ halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 305 360 0  -2 nan 1024 1 denoised 0 0 0 1  -1 4294967295")
+ halide_trace_helper("input", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 10, pipeline.trace_id, 0, 0, "htv_func_config: -1 -1 -1 10 348 0  -2 nan 1024 1 input(RAW\\x20image) 0 0 0 1  -1 4294967295")
+ let processed.trace_id = halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(processed.min.0, processed.extent.0, processed.min.1, processed.extent.1, processed.min.2, processed.extent.2), 3, 0, 0, 2, pipeline.trace_id, 0, 6, "")
+ allocate curve[uint8 * 1024]
+ let curve.trace_id = halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 2, pipeline.trace_id, 0, 2, "")
+ let curve.trace_id_1 = halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 4, curve.trace_id, 0, 2, "")
+ produce curve {
+  let t6991 = (float32)pow_f32(2.000000f, (float32)contrast*0.010000f)
+  let t6990 = 1.000000f/(float32)gamma
+  let t6989 = 1.000000f/float32((whiteLevel - blackLevel))
+  for (curve.s0.v0, 0, 1024) {
+   let t6656 = (float32)pow_f32(max(min(t6989*float32((curve.s0.v0 - blackLevel)), 1.000000f), 0.000000f), t6990)
+   let t6658 = select(blackLevel < curve.s0.v0, select(whiteLevel < curve.s0.v0, (uint8)255, uint8((max(min(select(0.500000f < t6656, 1.000000f - ((1.000000f - t6656)*((((1.000000f - t6656)*((t6991*2.000000f) + -2.000000f)) - t6991) + 2.000000f)), (((((t6991*2.000000f) + -2.000000f)*t6656) - t6991) + 2.000000f)*t6656)*255.000000f, 254.500000f), -0.500000f) + 0.500000f))), (uint8)0)
+   curve[curve.s0.v0] = (uint8)return_second(halide_trace_helper("curve", (void *)make_struct(t6658), (int32_t *)make_struct(curve.s0.v0), 1, 8, 1, 1, curve.trace_id_1, 0, 1, ""), t6658)
+  }
+  halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 5, curve.trace_id_1, 0, 2, "")
+ }
+ let curve.trace_id_2 = halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 6, curve.trace_id, 0, 2, "")
+ allocate f26[int16 * 12]
+ let f26.trace_id = halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 2, pipeline.trace_id, 0, 4, "")
+ let f26.trace_id_1 = halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 4, f26.trace_id, 0, 4, "")
+ produce f26 {
+  let t6996 = 1.000000f/(float32)color_temp
+  let t6995 = (t6996*5894.736816f) + -0.842105f
+  let t6994 = (t6996*-5894.736816f) + 1.842105f
+  let t6993 = (matrix_7000.min.1*matrix_7000.stride.1) + matrix_7000.min.0
+  let t6992 = (matix_3200.min.1*matix_3200.stride.1) + matix_3200.min.0
+  for (f26.s0.v1, 0, 3) {
+   let t6998 = (f26.s0.v1*matrix_7000.stride.1) - t6993
+   let t6997 = (f26.s0.v1*matix_3200.stride.1) - t6992
+   for (f26.s0.v0, 0, 4) {
+    let t6659 = matix_3200[f26.s0.v0 + t6997]
+    let t6660 = (int32_t *)make_struct(f26.s0.v0, f26.s0.v1)
+    let t6661 = matrix_7000[f26.s0.v0 + t6998]
+    let t6662 = ((float32)return_second(halide_trace_helper("matix_3200", (void *)make_struct(t6659), t6660, 2, 32, 1, 0, pipeline.trace_id, 0, 2, ""), t6659)*t6994) + ((float32)return_second(halide_trace_helper("matrix_7000", (void *)make_struct(t6661), t6660, 2, 32, 1, 0, pipeline.trace_id, 0, 2, ""), t6661)*t6995)
+    f26[(f26.s0.v1*4) + f26.s0.v0] = (int16)return_second(halide_trace_helper("f26", (void *)make_struct(int16((t6662*256.000000f))), t6660, 0, 16, 1, 1, f26.trace_id_1, 0, 2, ""), int16((t6662*256.000000f)))
+   }
+  }
+  halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 5, f26.trace_id_1, 0, 4, "")
+ }
+ let f26.trace_id_2 = halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 6, f26.trace_id, 0, 4, "")
+ allocate sharpen_strength_x32[uint8 * 1]
+ let sharpen_strength_x32.trace_id = halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 2, pipeline.trace_id, 0, 0, "")
+ let sharpen_strength_x32.trace_id_1 = halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 4, sharpen_strength_x32.trace_id, 0, 0, "")
+ produce sharpen_strength_x32 {
+  let t6663 = uint8(max(min((float32)sharpen_strenght*32.000000f, 255.000000f), 0.000000f))
+  sharpen_strength_x32[0] = (uint8)return_second(halide_trace_helper("sharpen_strength_x32", (void *)make_struct(t6663), (int32_t *)make_struct(), 1, 8, 1, 1, sharpen_strength_x32.trace_id_1, 0, 0, ""), t6663)
+  halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 5, sharpen_strength_x32.trace_id_1, 0, 0, "")
+ }
+ let sharpen_strength_x32.trace_id_2 = halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 6, sharpen_strength_x32.trace_id, 0, 0, "")
+ assert((0 <= processed.min.1) && (((processed.extent.1 % 32) + processed.min.1) <= 0), halide_error_explicit_bounds_too_small("v1", "processed", 0, ((processed.extent.1/32)*32) + -1, processed.min.1, (processed.extent.1 + processed.min.1) + -1))
+ assert((0 <= processed.min.0) && (((processed.extent.0 % 32) + processed.min.0) <= 0), halide_error_explicit_bounds_too_small("v0", "processed", 0, ((processed.extent.0/32)*32) + -1, processed.min.0, (processed.extent.0 + processed.min.0) + -1))
+ assert((0 <= processed.min.2) && ((processed.extent.2 + processed.min.2) <= 3), halide_error_explicit_bounds_too_small("v2", "processed", 0, 2, processed.min.2, (processed.extent.2 + processed.min.2) + -1))
+ let processed.trace_id_1 = halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(0, (processed.extent.0/32)*32, 0, (processed.extent.1/32)*32, 0, 3), 3, 0, 0, 4, processed.trace_id, 0, 6, "")
+ produce processed {
+  consume sharpen_strength_x32 {
+   consume f26 {
+    consume curve {
+     let t7023 = input.min.1*input.stride.1
+     let t7024 = processed.extent.0/32
+     let t7025 = t7024*32
+     let t7026 = min(t7025, 24)
+     let t7027 = processed.extent.0/64
+     let t7028 = t7024*16
+     let t7029 = max(t7025, 24)
+     let t7003 = max((t7027*32) + 14, t7028)
+     let t7006 = (t7029 + 43)/32
+     let t7000 = processed.extent.1/32
+     let t7001 = max((t7027*64) + 56, t7025) - t7026
+     let t7015 = (t7025 - t7023) - input.min.0
+     let t7007 = (((14 - input.min.1)*input.stride.1) + t7026) - input.min.0
+     let t7009 = input.min.0 + t7023
+     let t7005 = input.extent.1 + input.min.1
+     parallel (processed.s0.v1.v3.v4, 0, t7000) {
+      allocate f1[int16 * (t7001 + 32) * 4]
+      let f1.trace_id = halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(t7026 + -28, t7001 + 32, (processed.s0.v1.v3.v4*32) + -4, 40), 3, 0, 0, 2, pipeline.trace_id, 0, 4, "")
+      allocate deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[int32 * 1] in Stack
+      deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[int32 * 1] in Stack
+      deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate deinterleaved[int16 * (t7003 + 19) * 4 * 4]
+      let deinterleaved.trace_id = halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7003 + 19, (processed.s0.v1.v3.v4*16) + -2, 20, 0, 4), 3, 0, 0, 2, pipeline.trace_id, 0, 6, "")
+      allocate f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[int32 * 1] in Stack
+      f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[0] = (processed.s0.v1.v3.v4*16) + -1
+      allocate f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[int32 * 1] in Stack
+      f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] = (processed.s0.v1.v3.v4*16) + -1
+      allocate f7[int16 * (t7003 + 18) * 4]
+      let f7.trace_id = halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7003 + 18, (processed.s0.v1.v3.v4*16) + -1, 19), 3, 0, 0, 2, pipeline.trace_id, 0, 4, "")
+      allocate f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[int32 * 1] in Stack
+      f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[int32 * 1] in Stack
+      f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] = (processed.s0.v1.v3.v4*16) + -2
+      allocate f13[int16 * (t7003 + 18) * 4]
+      let f13.trace_id = halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7003 + 18, (processed.s0.v1.v3.v4*16) + -2, 19), 3, 0, 0, 2, pipeline.trace_id, 0, 4, "")
+      allocate f28[uint8 * (t7025 + 32) * 34 * 3]
+      let f28.trace_id = halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 32, (processed.s0.v1.v3.v4*32) + -1, 34, 0, 3), 3, 0, 0, 2, pipeline.trace_id, 0, 6, "")
+      let t7030 = processed.s0.v1.v3.v4*32
+      let t7031 = processed.s0.v1.v3.v4*16
+      let t7039 = processed.s0.v1.v3.v4*-32
+      for (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 0, 20) {
+       let f28.s0.v1.min_2.s = max(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -6, t7030)
+       let f7.s0.v1.min_2.s.s = max(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 1) + t7031
+       let f1.trace_id_1 = halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(-4, t7025 + 8, ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -4, 2), 3, 0, 0, 4, f1.trace_id, 0, 4, "")
+       produce f1 {
+        if ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 12) <= t7005) {
+         let t7045 = ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -4)*input.stride.1)*2) + t7007
+         for (prefetch_reduce_input.1, 0, 6) {
+          let t7046 = (input.stride.1*prefetch_reduce_input.1) + t7045
+          for (prefetch_split_input.0, 0, t7006) {
+           (uint16)prefetch(input, ((prefetch_split_input.0*64) + t7046) + -14, 1, 32)
+          }
+         }
+        }
+        let t7055 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031
+        let t7056 = t7055*2
+        let t7047 = (t7055 + -4)*input.stride.1
+        let t7049 = input.stride.1*18
+        let t7050 = input.stride.1*16
+        let t7048 = input.stride.1*14
+        let t7053 = (((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*(t7001 + 32))*2) - t7026
+        let t7054 = ((t7056 + -7)*input.stride.1) - t7009
+        for (f1.s0.v0.v0, 0, t7024) {
+         let t6665 = (((f1.s0.v0.v0*16) + t7047)*2) - t7009
+         let t6666 = input[ramp((t6665 + t7048) + 12, 1, 32)]
+         let t6667 = input[ramp((t6665 + t7049) + 12, 1, 32)]
+         let t6669 = input[ramp((t6665 + t7050) + 14, 1, 32)]
+         let t6670 = input[ramp((t6665 + t7050) + 10, 1, 32)]
+         let t6671 = input[ramp((t6665 + t7050) + 12, 1, 32)]
+         let t6672.s = min(max(max(max(int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6666), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 6)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6666)), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6667), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 10)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6667))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6669), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 14, 1, 32), x32((t7055*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6669))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6670), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 10, 1, 32), x32((t7055*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6670))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6671), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6671)))
+         let t6963 = max(t6672.s, x32((int16)0))
+         f1[ramp(((f1.s0.v0.v0*32) + t7053) + 24, 1, 32) aligned(8, 0)] = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6963), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + -4, 1, 32), x32(t7056 + -4)), 0, 16, 32, 1, f1.trace_id_1, 0, 64, "")), t6963)
+         let t6674 = (f1.s0.v0.v0*32) + t7054
+         let t6675 = input[ramp((t6674 + t7048) + 12, 1, 32)]
+         let t6676 = input[ramp((t6674 + t7049) + 12, 1, 32)]
+         let t6678 = input[ramp((t6674 + t7050) + 14, 1, 32)]
+         let t6679 = input[ramp((t6674 + t7050) + 10, 1, 32)]
+         let t6680 = input[ramp((t6674 + t7050) + 12, 1, 32)]
+         let t6681.s = min(max(max(max(int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6675), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 7)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6675)), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6676), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 11)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6676))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6678), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 14, 1, 32), x32((t7055*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6678))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6679), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 10, 1, 32), x32((t7055*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6679))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6680), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + 12, 1, 32), x32((t7055*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6680)))
+         let t6965 = max(t6681.s, x32((int16)0))
+         f1[ramp(((f1.s0.v0.v0*32) + (((((t7055*2) + 1) % 4)*(t7001 + 32)) - t7026)) + 24, 1, 32) aligned(8, 0)] = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6965), (int32_t *)make_struct(ramp((f1.s0.v0.v0*32) + -4, 1, 32), x32((t7055*2) + -3)), 0, 16, 32, 1, f1.trace_id_1, 0, 64, "")), t6965)
+        }
+        let t6683 = (((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -4)*input.stride.1) + t7028)*2) - t7009
+        let t6684 = input[ramp(((input.stride.1*14) + t6683) + -12, 1, 32)]
+        let t6685 = input[ramp(((input.stride.1*18) + t6683) + -12, 1, 32)]
+        let t6687 = input[ramp(((input.stride.1*16) + t6683) + -10, 1, 32)]
+        let t6688 = input[ramp(((input.stride.1*16) + t6683) + -14, 1, 32)]
+        let t6689 = input[ramp(((input.stride.1*16) + t6683) + -12, 1, 32)]
+        let t6690.s = min(max(max(max(int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6684), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 6)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6684)), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6685), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 10)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6685))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6687), (int32_t *)make_struct(ramp(t7025 + -10, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6687))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6688), (int32_t *)make_struct(ramp(t7025 + -14, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6688))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6689), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 8)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6689)))
+        let t6968 = max(t6690.s, x32((int16)0))
+        f1[ramp(((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*(t7001 + 32))*2) + t7029) + -24, 1, 32) aligned(8, 0)] = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6968), (int32_t *)make_struct(ramp(t7025 + -28, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -4)), 0, 16, 32, 1, f1.trace_id_1, 0, 64, "")), t6968)
+        let t6692 = ((((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -7)*input.stride.1) + t7015
+        let t6693 = input[ramp(((input.stride.1*14) + t6692) + -12, 1, 32)]
+        let t6694 = input[ramp(((input.stride.1*18) + t6692) + -12, 1, 32)]
+        let t6696 = input[ramp(((input.stride.1*16) + t6692) + -10, 1, 32)]
+        let t6697 = input[ramp(((input.stride.1*16) + t6692) + -14, 1, 32)]
+        let t6698 = input[ramp(((input.stride.1*16) + t6692) + -12, 1, 32)]
+        let t6699.s = min(max(max(max(int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6693), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 7)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6693)), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6694), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 11)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6694))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6696), (int32_t *)make_struct(ramp(t7025 + -10, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6696))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6697), (int32_t *)make_struct(ramp(t7025 + -14, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6697))), int16x32((uint16x32)return_second(x32(halide_trace_helper("input", (void *)make_struct(t6698), (int32_t *)make_struct(ramp(t7025 + -12, 1, 32), x32(((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + 9)), 1, 16, 32, 0, pipeline.trace_id, 0, 64, "")), t6698)))
+        let t6970 = max(t6699.s, x32((int16)0))
+        let t6971 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031
+        f1[ramp((((((t6971*2) + 1) % 4)*(t7001 + 32)) + t7029) + -24, 1, 32) aligned(8, 0)] = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6970), (int32_t *)make_struct(ramp(t7025 + -28, 1, 32), x32((t6971*2) + -3)), 0, 16, 32, 1, f1.trace_id_1, 0, 64, "")), t6970)
+        halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(-4, t7025 + 8, ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -4, 2), 3, 0, 0, 5, f1.trace_id_1, 0, 4, "")
+       }
+       let f1.trace_id_2 = halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(-4, t7025 + 8, ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -4, 2), 3, 0, 0, 6, f1.trace_id, 0, 4, "")
+       let deinterleaved.trace_id_1 = halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 4, (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2, 1, 0, 4), 3, 0, 0, 4, deinterleaved.trace_id, 0, 6, "")
+       produce deinterleaved {
+        let t4125 = max(deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2)
+        assert(deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + 2), halide_error_bad_fold("deinterleaved", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+        deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head[0] = t4125
+        deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] = t4125
+        consume f1 {
+         let t7064 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031
+         let t7065 = t7064*2
+         let t7066 = t7001 + 32
+         let t7057 = (((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased % 2)*t7066)*2) - t7026
+         let t7061 = (((t7065 + 1) % 4)*t7066) - t7026
+         for (deinterleaved.s0.v0.v0, 0, t7027 + 1) {
+          let t6700 = f1[ramp(((deinterleaved.s0.v0.v0*64) + t7057) + 24, 2, 32) aligned(8, 0)]
+          let t6702 = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6700), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*64) + -4, 2, 32), x32(t7065 + -4)), 0, 16, 32, 0, f1.trace_id_2, 0, 64, "")), t6700)
+          deinterleaved[ramp((((t7064 + 2) % 4)*(t7003 + 19)) + (deinterleaved.s0.v0.v0*32), 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6702), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*32) + -2, 1, 32), x32(t7064 + -2), x32(0)), 0, 16, 32, 1, deinterleaved.trace_id_1, 0, 96, "")), t6702)
+          let t6703 = f1[ramp(((deinterleaved.s0.v0.v0*64) + t7057) + 25, 2, 32) aligned(8, 1)]
+          let t6705 = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6703), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*64) + -3, 2, 32), x32(t7065 + -4)), 0, 16, 32, 0, f1.trace_id_2, 0, 64, "")), t6703)
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + ((t7003*4) + (((t7064 + 2) % 4)*(t7003 + 19)))) + 76, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6705), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*32) + -2, 1, 32), x32(t7064 + -2), x32(1)), 0, 16, 32, 1, deinterleaved.trace_id_1, 0, 96, "")), t6705)
+          let t6707 = f1[ramp(((deinterleaved.s0.v0.v0*64) + t7061) + 24, 2, 32) aligned(8, 0)]
+          let t6708 = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6707), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*64) + -4, 2, 32), x32(t7065 + -3)), 0, 16, 32, 0, f1.trace_id_2, 0, 64, "")), t6707)
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + ((t7003*8) + (((t7064 + 2) % 4)*(t7003 + 19)))) + 152, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6708), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*32) + -2, 1, 32), x32(t7064 + -2), x32(2)), 0, 16, 32, 1, deinterleaved.trace_id_1, 0, 96, "")), t6708)
+          let t6710 = f1[ramp(((deinterleaved.s0.v0.v0*64) + t7061) + 25, 2, 32) aligned(8, 1)]
+          let t6711 = (int16x32)return_second(x32(halide_trace_helper("f1", (void *)make_struct(t6710), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*64) + -3, 2, 32), x32(t7065 + -3)), 0, 16, 32, 0, f1.trace_id_2, 0, 64, "")), t6710)
+          deinterleaved[ramp(((deinterleaved.s0.v0.v0*32) + ((t7003*12) + (((t7064 + 2) % 4)*(t7003 + 19)))) + 228, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6711), (int32_t *)make_struct(ramp((deinterleaved.s0.v0.v0*32) + -2, 1, 32), x32(t7064 + -2), x32(3)), 0, 16, 32, 1, deinterleaved.trace_id_1, 0, 96, "")), t6711)
+         }
+        }
+        halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 4, (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2, 1, 0, 4), 3, 0, 0, 5, deinterleaved.trace_id_1, 0, 6, "")
+       }
+       let deinterleaved.trace_id_2 = halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 4, (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2, 1, 0, 4), 3, 0, 0, 6, deinterleaved.trace_id, 0, 6, "")
+       assert(let t6976 = (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased < 3) in (let t6978 = deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next[0] in (((select(t6976, processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031, max(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031, min(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 3) + (f28.s0.v1.min_2.s/2))) + -2) <= t6978) && (t6978 < select(t6976, f7.s0.v1.min_2.s.s + 1, min(f28.s0.v1.min_2.s/2, f7.s0.v1.min_2.s.s + -1) + 2)))), halide_error_bad_fold("deinterleaved", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+       if (1 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+        consume deinterleaved {
+         let f7.trace_id_1 = halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 3, f7.s0.v1.min_2.s.s + -2, 1), 3, 0, 0, 4, f7.trace_id, 0, 4, "")
+         produce f7 {
+          let t3959 = max(f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2)
+          assert(f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + 2), halide_error_bad_fold("f7", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+          f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head[0] = t3959
+          f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] = t3959
+          let f13.trace_id_1 = halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7028 + 3, f7.s0.v1.min_2.s.s + -3, 1), 3, 0, 0, 4, f13.trace_id, 0, 4, "")
+          produce f13 {
+           let t3868 = max(f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0], (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -3)
+           assert(f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] < ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + 1), halide_error_bad_fold("f13", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+           f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head[0] = t3868
+           f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] = t3868
+           let t7073 = t7003*12
+           let t7074 = (f7.s0.v1.min_2.s.s + 1) % 4
+           let t7075 = t7003 + 19
+           let t7076 = t7074*t7075
+           let t7077 = t7003 + 18
+           let t7078 = (f7.s0.v1.min_2.s.s + 2) % 4
+           let t7067 = t7075*t7078
+           let t7070 = t7077*t7078
+           let t7072 = t7074*t7077
+           for (f7.s0.v0.fused.v0, 0, t7027 + 1) {
+            let t6716 = (f7.s0.v0.fused.v0*32) + t7067
+            let t6717 = deinterleaved[ramp(t6716 + 1, 1, 32)]
+            let t6718 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6717), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -1, 1, 32), x32(f7.s0.v1.min_2.s.s + -2), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6717)
+            let t6719 = deinterleaved[ramp(t6716, 1, 32)]
+            let t6720 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6719), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -2, 1, 32), x32(f7.s0.v1.min_2.s.s + -2), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6719)
+            let t6721 = deinterleaved[ramp(((f7.s0.v0.fused.v0*32) + (t7073 + t7076)) + 228, 1, 32)]
+            let t6722 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6721), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -2, 1, 32), x32(f7.s0.v1.min_2.s.s + -3), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6721)
+            let t6723 = deinterleaved[ramp((t6716 + t7073) + 228, 1, 32)]
+            let t6724 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6723), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -2, 1, 32), x32(f7.s0.v1.min_2.s.s + -2), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6723)
+            let t6725 = select((uint16x32)absd(t6718, t6720) < (uint16x32)absd(t6722, t6724), (int16x32)rounding_halving_add(t6718, t6720), (int16x32)rounding_halving_add(t6722, t6724))
+            f7[ramp((f7.s0.v0.fused.v0*32) + t7070, 1, 32) aligned(2, 0)] = (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6725), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -2, 1, 32), x32(f7.s0.v1.min_2.s.s + -2)), 0, 16, 32, 1, f7.trace_id_1, 0, 64, "")), t6725)
+            let t6727 = (f7.s0.v0.fused.v0*32) + t7076
+            let t6729 = deinterleaved[ramp((t6727 + t7073) + 228, 1, 32)]
+            let t6730 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6729), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -2, 1, 32), x32(f7.s0.v1.min_2.s.s + -3), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6729)
+            let t6731 = deinterleaved[ramp((t6727 + t7073) + 229, 1, 32)]
+            let t6732 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6731), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -1, 1, 32), x32(f7.s0.v1.min_2.s.s + -3), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6731)
+            let t6733 = deinterleaved[ramp(((f7.s0.v0.fused.v0*32) + t7067) + 1, 1, 32)]
+            let t6734 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6733), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -1, 1, 32), x32(f7.s0.v1.min_2.s.s + -2), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6733)
+            let t6735 = deinterleaved[ramp(t6727 + 1, 1, 32)]
+            let t6736 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6735), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -1, 1, 32), x32(f7.s0.v1.min_2.s.s + -3), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6735)
+            let t6737 = select((uint16x32)absd(t6730, t6732) < (uint16x32)absd(t6734, t6736), (int16x32)rounding_halving_add(t6730, t6732), (int16x32)rounding_halving_add(t6734, t6736))
+            f13[ramp((f7.s0.v0.fused.v0*32) + t7072, 1, 32) aligned(2, 0)] = (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6737), (int32_t *)make_struct(ramp((f7.s0.v0.fused.v0*32) + -1, 1, 32), x32(f7.s0.v1.min_2.s.s + -3)), 0, 16, 32, 1, f13.trace_id_1, 0, 64, "")), t6737)
+           }
+           halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7028 + 3, f7.s0.v1.min_2.s.s + -3, 1), 3, 0, 0, 5, f13.trace_id_1, 0, 4, "")
+          }
+          halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 3, f7.s0.v1.min_2.s.s + -2, 1), 3, 0, 0, 5, f7.trace_id_1, 0, 4, "")
+         }
+         let f7.trace_id_2 = halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 3, f7.s0.v1.min_2.s.s + -2, 1), 3, 0, 0, 6, f7.trace_id, 0, 4, "")
+         assert(let t6979 = f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next[0] in ((((min(processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased, 3) + (f28.s0.v1.min_2.s/2)) + -2) <= t6979) && (t6979 < ((f28.s0.v1.min_2.s/2) + 3))), halide_error_bad_fold("f7", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+         if (3 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+          consume f7 {
+           let f13.trace_id_2 = halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7028 + 3, f7.s0.v1.min_2.s.s + -3, 1), 3, 0, 0, 6, f13.trace_id, 0, 4, "")
+           assert(let t6980 = f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next[0] in (((f28.s0.v1.min_2.s/2) <= t6980) && (t6980 < ((f28.s0.v1.min_2.s/2) + 2))), halide_error_bad_fold("f13", "v1", "processed.s0.v1.v3.v3.$n.$n.$n.$n"))
+           let f28.trace_id_1 = halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 2, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 4, f28.trace_id, 0, 6, "")
+           produce f28 {
+            consume f13 {
+             let t7096 = t7003*4
+             let t7097 = f28.s0.v1.min_2.s/2
+             let t7098 = t7097 % 4
+             let t7099 = t7003 + 19
+             let t7100 = t7098*t7099
+             let t7101 = t7003*8
+             let t7102 = (t7097 + 3) % 4
+             let t7103 = t7099*t7102
+             let t7104 = t7003*12
+             let t7105 = t7024*-32
+             let t7106 = f28.s0.v1.min_2.s + t7039
+             let t7107 = t7025 + 32
+             let t7108 = (t7106 + 1)*t7107
+             let t7109 = (t7106 + 2)*t7107
+             let t7110 = t7024*1056
+             let t7111 = t7024*2144
+             let t7112 = t7003 + 18
+             let t7084 = t7098*t7112
+             let t7083 = t7102*t7112
+             let t7095 = t7109 + t7111
+             let t7092 = t7108 + t7111
+             let t7094 = t7109 + t7110
+             let t7091 = t7108 + t7110
+             let t7093 = t7105 + t7109
+             let t7090 = t7105 + t7108
+             for (f28.s0.v0.v0, 0, t7024 + 1) {
+              allocate output[int16 * 32 * 2 * 3]
+              let output.trace_id = halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 2, pipeline.trace_id, 0, 6, "")
+              let output.trace_id_1 = halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 4, output.trace_id, 0, 6, "")
+              produce output {
+               let t6742 = (f28.s0.v0.v0*16) + (t7096 + t7103)
+               let t6743 = deinterleaved[ramp(t6742 + 77, 1, 16)]
+               let t6744 = interleave_vectors(t6743, deinterleaved[ramp(t6742 + 78, 1, 16)])
+               let t6745 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6744), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6744)
+               let t6747 = (f28.s0.v0.v0*16) + (t7096 + t7100)
+               let t6748 = deinterleaved[ramp(t6747 + 77, 1, 16)]
+               let t6749 = interleave_vectors(deinterleaved[ramp(t6747 + 76, 1, 16)], t6748)
+               let t6750 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6749), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6749)
+               let t6751 = interleave_vectors(deinterleaved[ramp(t6742 + 76, 1, 16)], t6743)
+               let t6752 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6751), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097 + -1), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6751)
+               let t6753 = interleave_vectors(t6748, deinterleaved[ramp(t6747 + 78, 1, 16)])
+               let t6754 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6753), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6753)
+               let t6755 = (f28.s0.v0.v0*16) + t7083
+               let t6756 = interleave_vectors(f13[ramp(t6755, 1, 16) aligned(2, 0)], f13[ramp(t6755 + 1, 1, 16) aligned(2, 1)])
+               let t6757 = (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1))
+               let t6758 = (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6756), t6757, 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6756)
+               let t6759 = f7[ramp(t6755 + 1, 1, 16) aligned(2, 1)]
+               let t6760 = interleave_vectors(t6759, f7[ramp(t6755 + 2, 1, 16) aligned(2, 0)])
+               let t6761.s = (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6760), t6757, 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6760)
+               let t6762 = (f28.s0.v0.v0*16) + t7084
+               let t6763 = f7[ramp(t6762 + 1, 1, 16) aligned(2, 1)]
+               let t6764 = interleave_vectors(f7[ramp(t6762, 1, 16) aligned(2, 0)], t6763)
+               let t6766 = interleave_vectors(f7[ramp(t6755, 1, 16) aligned(2, 0)], t6759)
+               let t6767 = interleave_vectors(t6763, f7[ramp(t6762 + 2, 1, 16) aligned(2, 0)])
+               let t6768.s = (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6767), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6767)
+               let t6770 = (f28.s0.v0.v0*16) + (t7103 + t7104)
+               let t6771 = interleave_vectors(deinterleaved[ramp(t6770 + 229, 1, 16)], deinterleaved[ramp(t6770 + 230, 1, 16)])
+               let t6772 = select((ramp(1, 1, 32) % x32(2)) == x32(0), select((uint16x32)absd(t6745, t6750) < (uint16x32)absd(t6752, t6754), (t6758 - (int16x32)rounding_halving_add(t6761.s, (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6764), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6764))) + (int16x32)rounding_halving_add(t6745, t6750), (t6758 - (int16x32)rounding_halving_add((int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6766), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097 + -1)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6766), t6768.s)) + (int16x32)rounding_halving_add(t6752, t6754)), ((int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6771), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6771) - (int16x32)rounding_halving_add(t6761.s, t6768.s)) + (int16x32)rounding_halving_add(t6745, t6754))
+               output[ramp(0, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6772), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(0)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6772)
+               let t6774 = (f28.s0.v0.v0*16) + t7083
+               let t6775 = interleave_vectors(f13[ramp(t6774, 1, 16) aligned(2, 0)], f13[ramp(t6774 + 1, 1, 16) aligned(2, 1)])
+               let t6776 = (f28.s0.v0.v0*16) + (t7103 + t7104)
+               let t6777 = interleave_vectors(deinterleaved[ramp(t6776 + 229, 1, 16)], deinterleaved[ramp(t6776 + 230, 1, 16)])
+               let t6778 = select((ramp(1, 1, 32) % x32(2)) == x32(0), (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6775), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6775), (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6777), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6777))
+               output[ramp(64, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6778), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(1)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6778)
+               let t6781 = (f28.s0.v0.v0*16) + (t7101 + t7103)
+               let t6782 = deinterleaved[ramp(t6781 + 154, 1, 16)]
+               let t6783 = interleave_vectors(deinterleaved[ramp(t6781 + 153, 1, 16)], t6782)
+               let t6784 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6783), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6783)
+               let t6785 = (f28.s0.v0.v0*16) + (t7103 + t7104)
+               let t6786 = interleave_vectors(deinterleaved[ramp(t6785 + 229, 1, 16)], deinterleaved[ramp(t6785 + 230, 1, 16)])
+               let t6787 = (f28.s0.v0.v0*16) + t7083
+               let t6788 = f13[ramp(t6787 + 1, 1, 16) aligned(2, 1)]
+               let t6789 = interleave_vectors(f13[ramp(t6787, 1, 16) aligned(2, 0)], t6788)
+               let t6790 = interleave_vectors(t6788, f13[ramp(t6787 + 2, 1, 16) aligned(2, 0)])
+               let t6791 = interleave_vectors(t6782, deinterleaved[ramp(t6781 + 155, 1, 16)])
+               let t6792 = select((ramp(1, 1, 32) % x32(2)) == x32(0), t6784, ((int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6786), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(3)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6786) - (int16x32)rounding_halving_add((int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6789), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6789), (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6790), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097 + -1)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6790))) + (int16x32)rounding_halving_add(t6784, (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6791), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097 + -1), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6791)))
+               output[ramp(128, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6792), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(2)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6792)
+               let t6796 = interleave_vectors(deinterleaved[ramp(((f28.s0.v0.v0*16) + t7100) + 1, 1, 16)], deinterleaved[ramp(((f28.s0.v0.v0*16) + t7100) + 2, 1, 16)])
+               let t6797 = (f28.s0.v0.v0*16) + t7084
+               let t6798 = f7[ramp(t6797 + 1, 1, 16) aligned(2, 1)]
+               let t6799 = interleave_vectors(t6798, f7[ramp(t6797 + 2, 1, 16) aligned(2, 0)])
+               let t6800 = interleave_vectors(f7[ramp(t6797, 1, 16) aligned(2, 0)], t6798)
+               let t6801 = (f28.s0.v0.v0*16) + (t7096 + t7100)
+               let t6802 = deinterleaved[ramp(t6801 + 77, 1, 16)]
+               let t6803 = interleave_vectors(deinterleaved[ramp(t6801 + 76, 1, 16)], t6802)
+               let t6804 = interleave_vectors(t6802, deinterleaved[ramp(t6801 + 78, 1, 16)])
+               let t6805 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6804), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6804)
+               let t6806 = select((ramp(1, 1, 32) % x32(2)) == x32(0), ((int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6796), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6796) - (int16x32)rounding_halving_add((int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6799), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6799), (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6800), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6800))) + (int16x32)rounding_halving_add((int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6803), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(-1), x32(t7097), x32(1)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6803), t6805), t6805)
+               output[ramp(32, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6806), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(0)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6806)
+               let t6808 = (f28.s0.v0.v0*16) + t7100
+               let t6809 = interleave_vectors(deinterleaved[ramp(t6808 + 1, 1, 16)], deinterleaved[ramp(t6808 + 2, 1, 16)])
+               let t6810 = (f28.s0.v0.v0*16) + t7084
+               let t6811 = interleave_vectors(f7[ramp(t6810 + 1, 1, 16) aligned(2, 1)], f7[ramp(t6810 + 2, 1, 16) aligned(2, 0)])
+               let t6812 = select((ramp(1, 1, 32) % x32(2)) == x32(0), (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6809), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6809), (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6811), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097)), 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6811))
+               output[ramp(96, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6812), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(1)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6812)
+               let t6816 = interleave_vectors(deinterleaved[ramp(((f28.s0.v0.v0*16) + t7100) + 1, 1, 16)], deinterleaved[ramp(((f28.s0.v0.v0*16) + t7100) + 2, 1, 16)])
+               let t6817 = (f28.s0.v0.v0*16) + t7084
+               let t6818 = f13[ramp(t6817 + 1, 1, 16) aligned(2, 1)]
+               let t6819 = interleave_vectors(f13[ramp(t6817, 1, 16) aligned(2, 0)], t6818)
+               let t6820 = (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097))
+               let t6821.s = (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6819), t6820, 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6819)
+               let t6823 = (f28.s0.v0.v0*16) + t7083
+               let t6824 = f13[ramp(t6823 + 1, 1, 16) aligned(2, 1)]
+               let t6825 = interleave_vectors(f13[ramp(t6823, 1, 16) aligned(2, 0)], t6824)
+               let t6826.s = (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6825), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6825)
+               let t6827 = (f28.s0.v0.v0*16) + (t7100 + t7101)
+               let t6828 = deinterleaved[ramp(t6827 + 154, 1, 16)]
+               let t6829 = interleave_vectors(deinterleaved[ramp(t6827 + 153, 1, 16)], t6828)
+               let t6830 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6829), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6829)
+               let t6832 = (f28.s0.v0.v0*16) + (t7101 + t7103)
+               let t6833 = deinterleaved[ramp(t6832 + 154, 1, 16)]
+               let t6834 = interleave_vectors(deinterleaved[ramp(t6832 + 153, 1, 16)], t6833)
+               let t6835 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6834), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097 + -1), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6834)
+               let t6837 = interleave_vectors(t6833, deinterleaved[ramp(t6832 + 155, 1, 16)])
+               let t6838 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6837), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097 + -1), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6837)
+               let t6839 = interleave_vectors(t6828, deinterleaved[ramp(t6827 + 155, 1, 16)])
+               let t6840 = (int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6839), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097), x32(2)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6839)
+               let t6841 = interleave_vectors(f7[ramp(t6817 + 1, 1, 16) aligned(2, 1)], f7[ramp(t6817 + 2, 1, 16) aligned(2, 0)])
+               let t6842 = (int16x32)return_second(x32(halide_trace_helper("f7", (void *)make_struct(t6841), t6820, 0, 16, 32, 0, f7.trace_id_2, 0, 64, "")), t6841)
+               let t6843 = interleave_vectors(t6824, f13[ramp(t6823 + 2, 1, 16) aligned(2, 0)])
+               let t6844 = interleave_vectors(t6818, f13[ramp(t6817 + 2, 1, 16) aligned(2, 0)])
+               let t6845 = select((ramp(1, 1, 32) % x32(2)) == x32(0), ((int16x32)return_second(x32(halide_trace_helper("deinterleaved", (void *)make_struct(t6816), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)), x32(t7097), x32(0)), 0, 16, 32, 0, deinterleaved.trace_id_2, 0, 96, "")), t6816) - (int16x32)rounding_halving_add(t6821.s, t6826.s)) + (int16x32)rounding_halving_add(t6830, t6835), select((uint16x32)absd(t6830, t6838) < (uint16x32)absd(t6840, t6835), (t6842 - (int16x32)rounding_halving_add(t6821.s, (int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6843), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097 + -1)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6843))) + (int16x32)rounding_halving_add(t6830, t6838), (t6842 - (int16x32)rounding_halving_add((int16x32)return_second(x32(halide_trace_helper("f13", (void *)make_struct(t6844), (int32_t *)make_struct((int32x32)shift_right(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32((uint32)1)) + x32(1), x32(t7097)), 0, 16, 32, 0, f13.trace_id_2, 0, 64, "")), t6844), t6826.s)) + (int16x32)rounding_halving_add(t6840, t6835)))
+               output[ramp(160, 1, 32)] = (int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6845), (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(2)), 0, 16, 32, 1, output.trace_id_1, 0, 96, "")), t6845)
+               halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 5, output.trace_id_1, 0, 6, "")
+              }
+              let output.trace_id_2 = halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 6, output.trace_id, 0, 6, "")
+              allocate f27[int16 * 32 * 2 * 3]
+              let f27.trace_id = halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 2, pipeline.trace_id, 0, 6, "")
+              let f27.trace_id_1 = halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 4, f27.trace_id, 0, 6, "")
+              produce f27 {
+               consume output {
+                let t7113 = f28.s0.v0.v0*32
+                for (f27.s0.v1.rebased, 0, 2) {
+                 let t6846 = output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)]
+                 let t6847 = f26[2]
+                 let t6848 = output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)]
+                 let t6849 = f26[1]
+                 let t6850 = output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)]
+                 let t6851 = (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(0))
+                 let t6852 = f26[0]
+                 let t6853 = f26[3]
+                 let t6854 = (int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6850), t6851, 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6850), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6852), (int32_t *)make_struct(0, 0), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6852))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6848), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(1)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6848), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6849), (int32_t *)make_struct(1, 0), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6849))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6846), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(2)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6846), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6847), (int32_t *)make_struct(2, 0), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6847))) + x32(int32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6853), (int32_t *)make_struct(3, 0), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6853)))))
+                 f27[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)] = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(int16x32((int32x32)shift_right(t6854, x32((uint32)8)))), t6851, 0, 16, 32, 1, f27.trace_id_1, 0, 96, "")), int16x32((int32x32)shift_right(t6854, x32((uint32)8))))
+                 let t6855 = output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)]
+                 let t6856 = f26[6]
+                 let t6857 = output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)]
+                 let t6858 = (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(1))
+                 let t6859 = f26[5]
+                 let t6860 = output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)]
+                 let t6861 = f26[4]
+                 let t6862 = f26[7]
+                 let t6863 = (int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6860), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(0)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6860), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6861), (int32_t *)make_struct(0, 1), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6861))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6857), t6858, 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6857), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6859), (int32_t *)make_struct(1, 1), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6859))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6855), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(2)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6855), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6856), (int32_t *)make_struct(2, 1), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6856))) + x32(int32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6862), (int32_t *)make_struct(3, 1), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6862)))))
+                 f27[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)] = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(int16x32((int32x32)shift_right(t6863, x32((uint32)8)))), t6858, 0, 16, 32, 1, f27.trace_id_1, 0, 96, "")), int16x32((int32x32)shift_right(t6863, x32((uint32)8))))
+                 let t6864 = output[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)]
+                 let t6865 = (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(2))
+                 let t6866 = f26[10]
+                 let t6867 = output[ramp((f27.s0.v1.rebased*32) + 64, 1, 32) aligned(32, 0)]
+                 let t6868 = f26[9]
+                 let t6869 = output[ramp(f27.s0.v1.rebased*32, 1, 32) aligned(32, 0)]
+                 let t6870 = f26[8]
+                 let t6871 = f26[11]
+                 let t6872 = (int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6869), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(0)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6869), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6870), (int32_t *)make_struct(0, 2), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6870))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6867), (int32_t *)make_struct(ramp(t7113 + -1, 1, 32), x32((f27.s0.v1.rebased + f28.s0.v1.min_2.s) + -1), x32(1)), 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6867), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6868), (int32_t *)make_struct(1, 2), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6868))) + ((int32x32)widening_mul((int16x32)return_second(x32(halide_trace_helper("output", (void *)make_struct(t6864), t6865, 0, 16, 32, 0, output.trace_id_2, 0, 96, "")), t6864), x32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6866), (int32_t *)make_struct(2, 2), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6866))) + x32(int32((int16)return_second(halide_trace_helper("f26", (void *)make_struct(t6871), (int32_t *)make_struct(3, 2), 0, 16, 1, 0, f26.trace_id_2, 0, 2, ""), t6871)))))
+                 f27[ramp((f27.s0.v1.rebased*32) + 128, 1, 32) aligned(32, 0)] = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(int16x32((int32x32)shift_right(t6872, x32((uint32)8)))), t6865, 0, 16, 32, 1, f27.trace_id_1, 0, 96, "")), int16x32((int32x32)shift_right(t6872, x32((uint32)8))))
+                }
+               }
+               free output
+               halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 5, f27.trace_id_1, 0, 6, "")
+              }
+              let f27.trace_id_2 = halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 6, f27.trace_id, 0, 6, "")
+              consume f27 {
+               let t6873 = f27[ramp(0, 1, 32)]
+               let t6874 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(0))
+               let t6875.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6873), t6874, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6873)
+               let t6876 = curve[int32x32(max(min(t6875.s, x32((int16)1023)), x32((int16)0)))]
+               let t6877 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6876), (int32_t *)make_struct(int32x32(max(min(t6875.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6876)
+               f28[ramp(((f28.s0.v0.v0*32) + t7090) + -32, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6877), t6874, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6877)
+               let t6878 = f27[ramp(64, 1, 32)]
+               let t6879 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(1))
+               let t6880.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6878), t6879, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6878)
+               let t6881 = curve[int32x32(max(min(t6880.s, x32((int16)1023)), x32((int16)0)))]
+               let t6882 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6881), (int32_t *)make_struct(int32x32(max(min(t6880.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6881)
+               f28[ramp(((f28.s0.v0.v0*32) + t7091) + 1056, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6882), t6879, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6882)
+               let t6883 = f27[ramp(128, 1, 32)]
+               let t6884 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s + -1), x32(2))
+               let t6885.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6883), t6884, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6883)
+               let t6886 = curve[int32x32(max(min(t6885.s, x32((int16)1023)), x32((int16)0)))]
+               let t6887 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6886), (int32_t *)make_struct(int32x32(max(min(t6885.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6886)
+               f28[ramp(((f28.s0.v0.v0*32) + t7092) + 2144, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6887), t6884, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6887)
+               let t6888 = f27[ramp(32, 1, 32)]
+               let t6889 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(0))
+               let t6890.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6888), t6889, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6888)
+               let t6891 = curve[int32x32(max(min(t6890.s, x32((int16)1023)), x32((int16)0)))]
+               let t6892 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6891), (int32_t *)make_struct(int32x32(max(min(t6890.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6891)
+               f28[ramp(((f28.s0.v0.v0*32) + t7093) + -32, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6892), t6889, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6892)
+               let t6893 = f27[ramp(96, 1, 32)]
+               let t6894 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(1))
+               let t6895.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6893), t6894, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6893)
+               let t6896 = curve[int32x32(max(min(t6895.s, x32((int16)1023)), x32((int16)0)))]
+               let t6897 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6896), (int32_t *)make_struct(int32x32(max(min(t6895.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6896)
+               f28[ramp(((f28.s0.v0.v0*32) + t7094) + 1056, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6897), t6894, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6897)
+               let t6898 = f27[ramp(160, 1, 32)]
+               let t6899 = (int32_t *)make_struct(ramp((f28.s0.v0.v0*32) + -1, 1, 32), x32(f28.s0.v1.min_2.s), x32(2))
+               let t6900.s = (int16x32)return_second(x32(halide_trace_helper("f27", (void *)make_struct(t6898), t6899, 0, 16, 32, 0, f27.trace_id_2, 0, 96, "")), t6898)
+               let t6901 = curve[int32x32(max(min(t6900.s, x32((int16)1023)), x32((int16)0)))]
+               let t6902 = (uint8x32)return_second(x32(halide_trace_helper("curve", (void *)make_struct(t6901), (int32_t *)make_struct(int32x32(max(min(t6900.s, x32((int16)1023)), x32((int16)0)))), 1, 8, 32, 0, curve.trace_id_2, 0, 32, "")), t6901)
+               f28[ramp(((f28.s0.v0.v0*32) + t7095) + 2144, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6902), t6899, 1, 8, 32, 1, f28.trace_id_1, 0, 96, "")), t6902)
+               free f27
+              }
+              halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 7, f27.trace_id_2, 0, 6, "")
+              halide_trace_helper("f27", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 3, f27.trace_id, 0, 6, "")
+              halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 7, output.trace_id_2, 0, 6, "")
+              halide_trace_helper("output", (void *)make_struct(), (int32_t *)make_struct((f28.s0.v0.v0*32) + -1, 32, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 3, output.trace_id, 0, 6, "")
+             }
+            }
+            halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 2, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 5, f28.trace_id_1, 0, 6, "")
+           }
+           let f28.trace_id_2 = halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 2, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 6, f28.trace_id, 0, 6, "")
+           if (4 <= processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased) {
+            consume f28 {
+             let t7115 = (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2
+             let t7114 = processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased*2
+             for (processed.s0.v1.v5, 0, 2) {
+              let t7128 = processed.s0.v1.v5 + t7115
+              let t7129 = (t7128 + -8)*processed.stride.1
+              let t7130 = ((processed.s0.v1.v5 + t7114) + -7)*(t7025 + 32)
+              let t7125 = processed.stride.2 + t7129
+              let t7126 = (t7024*2176) + t7130
+              let t7124 = (t7024*1088) + t7130
+              let t7127 = (processed.stride.2*2) + t7129
+              for (processed.s0.v0.v0, 0, t7024) {
+               let t6903 = (processed.s0.v0.v0*32) + t7130
+               let t6904 = f28[ramp(t6903 + 1, 1, 32) aligned(32, 1)]
+               let t6907 = (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -8), x32(0))
+               let t6908 = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6904), t6907, 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6904)
+               let t6911 = f28[ramp(((t7024*-32) + t6903) + -32, 1, 32)]
+               let t6913 = f28[ramp((t6903 + t7025) + 32, 1, 32) aligned(32, 0)]
+               let t6914 = f28[ramp(t6903, 1, 32) aligned(32, 0)]
+               let t6915 = f28[ramp(((t7024*-32) + t6903) + -30, 1, 32)]
+               let t6916 = f28[ramp((t6903 + t7025) + 34, 1, 32) aligned(32, 2)]
+               let t6917 = f28[ramp(t6903 + 2, 1, 32) aligned(32, 2)]
+               let t6918 = f28[ramp(((t7024*-32) + t6903) + -31, 1, 32)]
+               let t6919 = f28[ramp((t6903 + t7025) + 33, 1, 32) aligned(32, 1)]
+               let t6920 = sharpen_strength_x32[0]
+               let t6921 = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t6908, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6911), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -9), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6911), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6913), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -7), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6913)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6914), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -8), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6914)), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6915), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -9), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6915), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6916), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -7), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6916)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6917), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -8), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6917))), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6918), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -9), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6918), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6919), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -7), x32(0)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6919)), t6908)))*x32(int16((uint8)return_second(halide_trace_helper("sharpen_strength_x32", (void *)make_struct(t6920), (int32_t *)make_struct(), 1, 8, 1, 0, sharpen_strength_x32.trace_id_2, 0, 0, ""), t6920))), x32((uint16)5)) + int16x32(t6908), x32((int16)255)), x32((int16)0)))
+               processed[ramp((processed.s0.v0.v0*32) + t7129, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("processed", (void *)make_struct(t6921), t6907, 1, 8, 32, 1, processed.trace_id_1, 0, 96, "")), t6921)
+               let t6922 = (processed.s0.v0.v0*32) + t7124
+               let t6923 = f28[ramp(t6922 + 1089, 1, 32) aligned(32, 1)]
+               let t6926 = (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -8), x32(1))
+               let t6927 = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6923), t6926, 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6923)
+               let t6930 = f28[ramp(((t7024*-32) + t6922) + 1056, 1, 32)]
+               let t6932 = f28[ramp((t6922 + t7025) + 1120, 1, 32) aligned(32, 0)]
+               let t6933 = f28[ramp(t6922 + 1088, 1, 32) aligned(32, 0)]
+               let t6934 = f28[ramp(((t7024*-32) + t6922) + 1058, 1, 32)]
+               let t6935 = f28[ramp((t6922 + t7025) + 1122, 1, 32) aligned(32, 2)]
+               let t6936 = f28[ramp(t6922 + 1090, 1, 32) aligned(32, 2)]
+               let t6937 = f28[ramp(((t7024*-32) + t6922) + 1057, 1, 32)]
+               let t6938 = f28[ramp((t6922 + t7025) + 1121, 1, 32) aligned(32, 1)]
+               let t6939 = sharpen_strength_x32[0]
+               let t6940 = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t6927, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6930), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -9), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6930), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6932), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -7), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6932)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6933), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -8), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6933)), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6934), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -9), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6934), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6935), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -7), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6935)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6936), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -8), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6936))), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6937), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -9), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6937), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6938), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -7), x32(1)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6938)), t6927)))*x32(int16((uint8)return_second(halide_trace_helper("sharpen_strength_x32", (void *)make_struct(t6939), (int32_t *)make_struct(), 1, 8, 1, 0, sharpen_strength_x32.trace_id_2, 0, 0, ""), t6939))), x32((uint16)5)) + int16x32(t6927), x32((int16)255)), x32((int16)0)))
+               processed[ramp((processed.s0.v0.v0*32) + t7125, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("processed", (void *)make_struct(t6940), t6926, 1, 8, 32, 1, processed.trace_id_1, 0, 96, "")), t6940)
+               let t6941 = (processed.s0.v0.v0*32) + t7126
+               let t6942 = f28[ramp(t6941 + 2177, 1, 32) aligned(32, 1)]
+               let t6945 = (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -8), x32(2))
+               let t6946 = (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6942), t6945, 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6942)
+               let t6949 = f28[ramp(((t7024*-32) + t6941) + 2144, 1, 32)]
+               let t6951 = f28[ramp((t6941 + t7025) + 2208, 1, 32) aligned(32, 0)]
+               let t6952 = f28[ramp(t6941 + 2176, 1, 32) aligned(32, 0)]
+               let t6953 = f28[ramp(((t7024*-32) + t6941) + 2146, 1, 32)]
+               let t6954 = f28[ramp((t6941 + t7025) + 2210, 1, 32) aligned(32, 2)]
+               let t6955 = f28[ramp(t6941 + 2178, 1, 32) aligned(32, 2)]
+               let t6956 = f28[ramp(((t7024*-32) + t6941) + 2145, 1, 32)]
+               let t6957 = f28[ramp((t6941 + t7025) + 2209, 1, 32) aligned(32, 1)]
+               let t6958 = sharpen_strength_x32[0]
+               let t6959 = uint8x32(max(min((int16x32)shift_right((int16x32)widening_sub(t6946, (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6949), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -9), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6949), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6951), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -7), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6951)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6952), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + -1, 1, 32), x32(t7128 + -8), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6952)), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6953), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -9), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6953), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6954), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -7), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6954)), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6955), (int32_t *)make_struct(ramp((processed.s0.v0.v0*32) + 1, 1, 32), x32(t7128 + -8), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6955))), (uint8x32)rounding_halving_add((uint8x32)rounding_halving_add((uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6956), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -9), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6956), (uint8x32)return_second(x32(halide_trace_helper("f28", (void *)make_struct(t6957), (int32_t *)make_struct(ramp(processed.s0.v0.v0*32, 1, 32), x32(t7128 + -7), x32(2)), 1, 8, 32, 0, f28.trace_id_2, 0, 96, "")), t6957)), t6946)))*x32(int16((uint8)return_second(halide_trace_helper("sharpen_strength_x32", (void *)make_struct(t6958), (int32_t *)make_struct(), 1, 8, 1, 0, sharpen_strength_x32.trace_id_2, 0, 0, ""), t6958))), x32((uint16)5)) + int16x32(t6946), x32((int16)255)), x32((int16)0)))
+               processed[ramp((processed.s0.v0.v0*32) + t7127, 1, 32)] = (uint8x32)return_second(x32(halide_trace_helper("processed", (void *)make_struct(t6959), t6945, 1, 8, 32, 1, processed.trace_id_1, 0, 96, "")), t6959)
+              }
+             }
+             halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 2, f28.s0.v1.min_2.s + -1, 2, 0, 3), 3, 0, 0, 7, f28.trace_id_2, 0, 6, "")
+            }
+           }
+           halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7028 + 3, f7.s0.v1.min_2.s.s + -3, 1), 3, 0, 0, 7, f13.trace_id_2, 0, 4, "")
+           halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 3, f7.s0.v1.min_2.s.s + -2, 1), 3, 0, 0, 7, f7.trace_id_2, 0, 4, "")
+          }
+         }
+         halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7028 + 4, (processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031) + -2, 1, 0, 4), 3, 0, 0, 7, deinterleaved.trace_id_2, 0, 6, "")
+        }
+       }
+       halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(-4, t7025 + 8, ((processed.s0.v1.v3.v3.$n.$n.$n.$n.rebased + t7031)*2) + -4, 2), 3, 0, 0, 7, f1.trace_id_2, 0, 4, "")
+      }
+      free f1
+      free deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head
+      free deinterleaved.processed.s0.v1.v3.v3.$n.$n.$n.$n_6.head_next
+      free deinterleaved
+      free f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head
+      free f7.processed.s0.v1.v3.v3.$n.$n.$n.$n_4.head_next
+      free f7
+      free f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head
+      free f13.processed.s0.v1.v3.v3.$n.$n.$n.$n_2.head_next
+      free f13
+      free f28
+      halide_trace_helper("f28", (void *)make_struct(), (int32_t *)make_struct(-1, t7025 + 32, (processed.s0.v1.v3.v4*32) + -1, 34, 0, 3), 3, 0, 0, 3, f28.trace_id, 0, 6, "")
+      halide_trace_helper("f13", (void *)make_struct(), (int32_t *)make_struct(-1, t7003 + 18, (processed.s0.v1.v3.v4*16) + -2, 19), 3, 0, 0, 3, f13.trace_id, 0, 4, "")
+      halide_trace_helper("f7", (void *)make_struct(), (int32_t *)make_struct(-2, t7003 + 18, (processed.s0.v1.v3.v4*16) + -1, 19), 3, 0, 0, 3, f7.trace_id, 0, 4, "")
+      halide_trace_helper("deinterleaved", (void *)make_struct(), (int32_t *)make_struct(-2, t7003 + 19, (processed.s0.v1.v3.v4*16) + -2, 20, 0, 4), 3, 0, 0, 3, deinterleaved.trace_id, 0, 6, "")
+      halide_trace_helper("f1", (void *)make_struct(), (int32_t *)make_struct(t7026 + -28, t7001 + 32, (processed.s0.v1.v3.v4*32) + -4, 40), 3, 0, 0, 3, f1.trace_id, 0, 4, "")
+     }
+    }
+   }
+  }
+  free curve
+  free f26
+  free sharpen_strength_x32
+  halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(0, (processed.extent.0/32)*32, 0, (processed.extent.1/32)*32, 0, 3), 3, 0, 0, 5, processed.trace_id_1, 0, 6, "")
+ }
+ halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 7, sharpen_strength_x32.trace_id_2, 0, 0, "")
+ halide_trace_helper("sharpen_strength_x32", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 3, sharpen_strength_x32.trace_id, 0, 0, "")
+ halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 7, f26.trace_id_2, 0, 4, "")
+ halide_trace_helper("f26", (void *)make_struct(), (int32_t *)make_struct(0, 4, 0, 3), 3, 0, 0, 3, f26.trace_id, 0, 4, "")
+ halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 7, curve.trace_id_2, 0, 2, "")
+ halide_trace_helper("curve", (void *)make_struct(), (int32_t *)make_struct(0, 1024), 3, 0, 0, 3, curve.trace_id, 0, 2, "")
+ halide_trace_helper("processed", (void *)make_struct(), (int32_t *)make_struct(processed.min.0, processed.extent.0, processed.min.1, processed.extent.1, processed.min.2, processed.extent.2), 3, 0, 0, 3, processed.trace_id, 0, 6, "")
+ halide_trace_helper("camera_pipe", (void *)make_struct(), (int32_t *)make_struct(), 3, 0, 0, 9, pipeline.trace_id, 0, 0, "")
+}
+}
+
+
