@@ -24,7 +24,7 @@ $(BIN)/%/process_viz: process.cpp  $(BIN)/%-trace_all/camera_pipe.a
 
 $(BIN)/%/out.png: $(BIN)/%/process
 	@mkdir -p $(@D)
-	$(BIN)/$*/process RAW_images/bayer_raw.png 3700 2.0 50 1.0 $(TIMING_ITERATIONS) output_images/output.png
+	$(BIN)/$*/process RAW_images/bayer_raw.png 3700 2.0 50 1.0 $(TIMING_ITERATIONS) output_images/raw_output.png
 
 $(BIN)/%/camera_pipe.mp4: $(BIN)/%/process_viz viz.sh ./HalideTraceViz 
 	HL_AVCONV=$(HL_AVCONV) bash viz.sh $(@D)
