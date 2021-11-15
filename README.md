@@ -13,7 +13,7 @@ Image Signal Processor Pipeline using Halide
 
 3.Demosaic image
 
-4.Color correct with 
+4.Color correct(According to the sensor in the Nokia N900)
 
 5.Gamma correct
 
